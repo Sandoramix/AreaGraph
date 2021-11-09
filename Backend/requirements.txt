@@ -2,6 +2,7 @@ python-dotenv
 
 flask-restful
 flask
+gevent
 
 psycopg2
 
