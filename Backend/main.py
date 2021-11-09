@@ -7,10 +7,10 @@ from gevent.pywsgi import WSGIServer
 
 if __name__=="__main__":
     #dev.
-    #app.run(debug=True,port=8080)
+    app.run(debug=True,port=8888)
     #production
-    server=WSGIServer(('0.0.0.0',7780),app)
-    server.serve_forever()
+    #server=WSGIServer(('0.0.0.0',8888),app)
+    #server.serve_forever()
     
     db.close()
     cur.close()
