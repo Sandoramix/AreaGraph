@@ -1,4 +1,5 @@
 #Virual enviroment [.env] modules and configuration
+import datetime
 import dotenv
 dotenv.load_dotenv()
 from os import environ
@@ -9,21 +10,21 @@ from flask_restful import Resource, reqparse
 import psycopg2 as psp
 
 #CONNECT TO DB
-db=psp.connect(host=environ['host'],port=environ['port'],database=environ['db'],user=environ['user'],password=environ['password']) 
-cur=db.cursor()
+db = psp.connect(host = environ['host'],port = environ['port'],database = environ['db'],user = environ['user'],password = environ['password']) 
+cur = db.cursor()
 
 def reconnect():
     global db
     global cur
     #debug @TODO remove on finish
-    print(f'database connection={db.closed}')
-    print(f'cursor connection={cur.closed}')
+    print(f'database connection = {db.closed}')
+    print(f'cursor connection = {cur.closed}')
     #RECONNECT TO DB
-    db=psp.connect(host=environ['host'],port=environ['port'],database=environ['db'],user=environ['user'],password=environ['password']) 
-    cur=db.cursor()
+    db = psp.connect(host = environ['host'],port = environ['port'],database = environ['db'],user = environ['user'],password = environ['password']) 
+    cur = db.cursor()
 
 
-def execute_query(query:str,fetch_n:int or None=None):
+def execute_query(query:str,fetch_n:int or None = None):
     """SQL command execution and retreiving of data
 
     Args:
@@ -59,12 +60,12 @@ def station_id_check(id:int)-> bool:
     Returns:
         `boolean` : `True` if exists, either `False`
     """
-    if not execute_query(f'select * from station where id={id}',fetch_n=1):
+    if not execute_query(f'select * from station where id = {id}',fetch_n = 1):
         return False
     return True
 
 
-def station_tuple_to_json(info: tuple,i:int=0):
+def station_tuple_to_json(info: tuple,i:int = 0):
     """Transform the station fetched information into an object
 
     Args:
@@ -100,15 +101,15 @@ class StationDataAvgController(Resource):
     
     #Required headers
     getparse = reqparse.RequestParser()
-    getparse.add_argument("station_id",type=int, help="No `station_id` parameter provided" ,required=True)
-    getparse.add_argument("date_from",type=str, help="No `date_from` parameter provided" ,required=True)
-    getparse.add_argument("date_to",type=str, help="No `date_to` parameter provided" ,required=True)
+    getparse.add_argument("station_id",type = int, help = "No `station_id` parameter provided" ,required = True)
+    getparse.add_argument("date_from",type = str, help = "No `date_from` parameter provided" ,required = True)
+    getparse.add_argument("date_to",type = str, help = "No `date_to` parameter provided" ,required = True)
     
     #query used for fetching the station by its `id` @[to contatenate]
-    fetch_station="select st.id,st.name,st.latitude,st.longitude from station as st where id="
+    fetch_station = "select st.id,st.name,st.latitude,st.longitude from station as st where id = "
 
     #inner join between the needed tables/view
-    fetch_between_dates="""select sdha.bucket as created_on, 
+    fetch_between_dates = """select sdha.bucket as created_on, 
                         sdha.avg as average, 
                         ss.id as sensor_id, 
                         ss.description as sensor_type, 
@@ -133,25 +134,44 @@ class StationDataAvgController(Resource):
             `json`,status-code 
             
         """
-        req_args=self.getparse.parse_args()
-        st_id=req_args['station_id']
+        req_args:dict = self.getparse.parse_args()
+        st_id:int = req_args['station_id']
         
         #Break the request if the station id doesn't exist
         if not station_id_check(st_id):
             abort(400,f'station_id `{st_id}` doesn\'t exists')
         
         #Dates 
-        date_from=req_args['date_from']
-        date_to=req_args['date_to']
+        date_from:str = req_args['date_from']
+        date_to:str = req_args['date_to']
+        
+        #@TODO IMPROVE? [DATES VALIDATION]
+        valid_date:bool = True
+        try:
+            date_from_splitted:str = date_from.split('.')[0]
+            date_to_splitted:str = date_to.split('.')[0]
+            
+            date_from_parsed:str = str(datetime.datetime.strptime(date_from_splitted,"%Y-%m-%d %H:%M:%S"))
+            date_to_parsed:str = str(datetime.datetime.strptime(date_to_splitted,"%Y-%m-%d %H:%M:%S"))
+
+            if date_from_splitted != date_from_parsed or date_to_splitted != date_to_parsed:
+                valid_date:bool = False
+        except Exception as e:
+            valid_date:bool = False
+        
+        if not valid_date:
+            abort(406,"DATE/S INVALID")
+
+
 
         #Format the query with right values
-        query=cur.mogrify(self.fetch_between_dates,(st_id,date_from,date_to))
+        query:str = cur.mogrify(self.fetch_between_dates,(st_id,date_from,date_to))
         
         #All fetched records
-        records=execute_query(query,fetch_n=0)
+        records:list[tuple] = execute_query(query,fetch_n = 0)
         
         #first row. Need for station informations
-        info=records[0]
+        info = records[0]
         return {
             "station":station_tuple_to_json(info,7),
             "data_hourly_avg":[
@@ -190,7 +210,7 @@ class Stations (Resource):
     def get(self):
         return{
             "stations":[
-                    station_tuple_to_json(i)  for i in execute_query("select st.id,st.name,st.latitude,st.longitude from station as st",fetch_n=0)
+                    station_tuple_to_json(i)  for i in execute_query("select st.id,st.name,st.latitude,st.longitude from station as st",fetch_n = 0)
                 ]
         },200 
 #----------------------------------------------------------------------------------------------
