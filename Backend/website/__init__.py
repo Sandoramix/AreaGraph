@@ -3,13 +3,14 @@ from flask import Flask,send_from_directory
 from flask.helpers import url_for
 from flask.templating import render_template
 from flask_restful import Api
+from flask_cors import CORS
 import os
 
 from .controllers import *
 
 #flask app
 app= Flask(__name__)
-
+cors=CORS(app)
 #Api inizialization
 api=Api(app) 
     
