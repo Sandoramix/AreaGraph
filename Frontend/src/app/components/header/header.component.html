@@ -1,0 +1,32 @@
+<nav class="w-100 p-1 navbar navbar-dark bg-dark align-middle" id="nav-custom">
+    <div>
+        <a [routerLink]="['/home']" (click)="titleService.setSubTitle('Home')" class="d-inline-flex nav
+            navbar-brand nav-link">
+            <img src="https://i.imgur.com/sr8kUGX.png" alt="AreaGraph" class="logo" title="AreaGraph">
+            <h3 id="areagraph">AreaGraph</h3>
+        </a>
+    </div>
+
+    <div class="nav-link abs-center" *ngIf="titleService.getSubTitle()!=='Lookout'">
+        <button class="btn-info bg-dark text-info btn-custom btn
+            btn-outline-info" [routerLink]="[getReferByTitle('Lookout').link[0]]" (click)="titleService.setSubTitle(getReferByTitle('Lookout').title)">
+            Start
+        </button>
+    </div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle
+        navigation" id="collapse-btn">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle
+        navigation">
+        <hr class="hr-custom">
+        <ul class="navbar-nav">
+            <li *ngFor="let tmp of getReferLinks()">
+                <a class="nav-link" [routerLink]="[tmp.link[0]]" routerLinkActive="active-dir" (click)="titleService.setSubTitle(tmp.title)">{{tmp.value}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
