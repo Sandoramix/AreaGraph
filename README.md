@@ -1,4 +1,5 @@
 # AreaGraph
+[![N|Solid](https://i.imgur.com/ODvK2av.png)](https://github.com/Sandoramix/AreaGraph)
 Progetto di scuola lavoro
 
 ## Obiettivo:
