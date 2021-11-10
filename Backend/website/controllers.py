@@ -100,10 +100,12 @@ class StationDataAvgController(Resource):
     """
     
     #Required headers
-    getparse = reqparse.RequestParser()
-    getparse.add_argument("station_id",type = int, help = "No `station_id` parameter provided" ,required = True)
-    getparse.add_argument("date_from",type = str, help = "No `date_from` parameter provided" ,required = True)
-    getparse.add_argument("date_to",type = str, help = "No `date_to` parameter provided" ,required = True)
+    parser = reqparse.RequestParser()
+    parser.add_argument("station_id",type = int, help = "No `station_id` parameter provided" ,required = True,location='form',case_sensitive=False)
+    parser.add_argument("date_from",type = str, help = "No `date_from` parameter provided" ,required = True,location='form',case_sensitive=False)
+    parser.add_argument("date_to",type = str, help = "No `date_to` parameter provided" ,required = True,location='form',case_sensitive=False)
+
+    
     
     #query used for fetching the station by its `id` @[to contatenate]
     fetch_station = "select st.id,st.name,st.latitude,st.longitude from station as st where id = "
@@ -126,15 +128,16 @@ class StationDataAvgController(Resource):
                         order by sdha.bucket, ss.name
     """
     
-    #GET Method
-    def get(self):
-        """GET Request
+    #POST Method
+    def post(self):
+        """POST Request
 
         Returns:
             `json`,status-code 
             
         """
-        req_args:dict = self.getparse.parse_args()
+        req_args:dict = self.parser.parse_args()
+        print(req_args)
         st_id:int = req_args['station_id']
         
         #Break the request if the station id doesn't exist
@@ -142,8 +145,9 @@ class StationDataAvgController(Resource):
             abort(400,f'station_id `{st_id}` doesn\'t exists')
         
         #Dates 
-        date_from:str = req_args['date_from']
-        date_to:str = req_args['date_to']
+        date_from:str = req_args['date_from'].strip()
+        date_to:str = req_args['date_to'].strip()
+        
         
         #@TODO IMPROVE? [DATES VALIDATION]
         valid_date:bool = True
