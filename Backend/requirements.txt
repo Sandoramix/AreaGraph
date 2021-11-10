@@ -3,6 +3,7 @@ python-dotenv
 flask-restful
 flask
 gevent
+flask-cors
 
 psycopg2
 
