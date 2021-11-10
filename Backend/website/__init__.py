@@ -21,7 +21,7 @@ api.add_resource(Stations,'/stations')
 
 @app.route('/')
 def home():
-    return render_template('index.html',title='Home'),306
+    return render_template('index.html',title='Home',message='This page is unused'),306
 
 #error changed responses
 @app.errorhandler(404)
