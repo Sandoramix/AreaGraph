@@ -4,6 +4,7 @@ flask-restful
 flask
 gevent
 flask-cors
+pyJWT
 
 psycopg2
 
