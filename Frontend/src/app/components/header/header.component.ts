@@ -1,3 +1,4 @@
+import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from './../../services/title/title-management.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -25,13 +26,16 @@ export class HeaderComponent implements OnInit {
     getReferLinks(): PageInformation[] {
         return this.referLinks
     }
-    constructor(public titleService: TitleManagementService) {
+    constructor(public titleService: TitleManagementService, private http: HttpRequestService) {
     }
 
     ngOnInit(): void {
 
     }
+    tryout() {
+        console.log(this.http.auth);
 
+    }
 }
 interface PageInformation {
     title: string

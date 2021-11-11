@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
 @Component({
     selector: 'app-about',
@@ -7,8 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
 
-    constructor() {
-
+    constructor(private title: TitleManagementService) {
+        title.setSubTitle('About')
     }
     ngOnInit(): void {
     }

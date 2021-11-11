@@ -7,8 +7,9 @@
         </a>
     </div>
 
-    <div class="nav-link abs-center" *ngIf="titleService.getSubTitle()!=='Lookout'">
-        <button class="btn-info bg-dark text-info btn-custom btn
+    <div class="nav-link abs-center">
+        <button *ngIf="titleService.getSubTitle()!=='Lookout'" class="btn-info
+            bg-dark text-info btn-custom btn
             btn-outline-info" [routerLink]="[getReferByTitle('Lookout').link[0]]" (click)="titleService.setSubTitle(getReferByTitle('Lookout').title)">
             Start
         </button>
