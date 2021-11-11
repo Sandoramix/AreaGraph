@@ -1,8 +1,8 @@
 export class Station {
-	private _id: number | null
-	private _name: string | null
-	private _latitude: number | null
-	private _longitude: number | null
+	private _id: number
+	private _name: string
+	private _latitude: number
+	private _longitude: number
 
 
 	get id() { return this._id }

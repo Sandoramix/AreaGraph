@@ -1,6 +1,7 @@
 import { HttpRequestService } from './../../services/requests/http-request.service';
 import { Component } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
 
 
@@ -12,16 +13,11 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class HomepageComponent {
 
-    constructor(private req: HttpRequestService) {
-
+    constructor(private title: TitleManagementService) {
+        title.setSubTitle('Home')
     }
 
 
-    getStations() {
-        this.req.getAllStations().subscribe((response: any) => {
-            console.log(response);
 
-        })
-    }
 
 }
