@@ -2,6 +2,7 @@
 from functools import wraps
 import datetime
 from os import environ
+from flask.helpers import make_response
 from flask_restful import Resource, reqparse
 import psycopg2 as psp
 import jwt
@@ -66,7 +67,6 @@ def token_required(f):
         token = None
         if 'Authorization' in request.headers:
             token = request.headers['Authorization']
-
         if not token or token[:7] != 'Bearer ':
             return jsonify({'message': 'Token is Missing [Starts with Bearer ]'})
         try:
@@ -75,8 +75,8 @@ def token_required(f):
             data = jwt.decode(
                 access_token, environ['secret_key'], algorithms=['HS256'])
         except Exception as e:
-            # print(e)
-            return jsonify({'message': 'token is invalid'})
+            print(e)
+            return make_response('Invalid token',  401, {'Authentication': 'Invalid token'})
 
         return f(*args, **kwargs)
     return decorator
@@ -115,7 +115,6 @@ def station_tuple_to_json(info: tuple, i: int = 0):
 
 
 class StationDataAvgController(Resource):
-
     """HTTP Methods controller for hourly data of a station
     - Requirements:
 
@@ -145,7 +144,7 @@ class StationDataAvgController(Resource):
     fetch_between_dates = """select sdha.bucket as created_on, 
                         sdha.avg as average, 
                         ss.id as sensor_id, 
-                        ss.description as sensor_type, 
+                        ss.sensor_type as sensor_type, 
                         ss.min_range_val as sensor_min_val, 
                         ss.max_range_val as sensor_max_val,
                         ss.unit as sensor_unit,
@@ -156,6 +155,7 @@ class StationDataAvgController(Resource):
                         inner join sensor as ss on sdha.sensor_id = ss.id 
                         inner join station as st on sdha.station_id =st.id 
                         where sdha.station_id =%s and sdha.bucket between %s and %s
+                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10')
                         order by sdha.bucket, ss.name
     """
 

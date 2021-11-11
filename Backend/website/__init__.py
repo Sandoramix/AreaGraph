@@ -25,7 +25,8 @@ def home():
     return render_template('index.html', title='Home', message='This page is unused'), 306
 
 
-@app.route('/api/auth', methods=['GET', 'POST'])
+# Auth route
+@app.route('/api/auth', methods=['GET'])
 def auth():
     auth = request.authorization
     if not auth or not auth.username or not auth.password:
@@ -39,10 +40,10 @@ def auth():
     if auth_passw != environ['jwt_password']:
         return make_response('Invalid password',  401, {'Login': 'Invalid password'})
 
-    expiration = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    expiration = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
     token = jwt.encode(
         {'user_id': auth_user, 'exp': expiration},
-        app.config['SECRET_KEY']
+        environ['secret_key']
     )
     return jsonify({
         'token': token,
