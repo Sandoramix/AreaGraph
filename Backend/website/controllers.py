@@ -67,6 +67,7 @@ def token_required(f):
         token = None
         if 'Authorization' in request.headers:
             token = request.headers['Authorization']
+
         if not token or token[:7] != 'Bearer ':
             return jsonify({'message': 'Token is Missing [Starts with Bearer ]'})
         try:
@@ -169,9 +170,7 @@ class StationDataAvgController(Resource):
 
         """
         req_args: dict = self.parser.parse_args()
-        print(req_args)
         st_id: int = req_args['station_id']
-
         # Break the request if the station id doesn't exist
         if not station_id_check(st_id):
             abort(400, f'station_id `{st_id}` doesn\'t exists')
