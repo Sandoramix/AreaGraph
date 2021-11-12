@@ -12,7 +12,8 @@ from .controllers import *
 
 app = Flask(__name__)
 
-cors = CORS(app)
+cors = CORS(app, send_wildcard=True, max_age=3600)
+
 # Api inizialization
 api = Api(app)
 

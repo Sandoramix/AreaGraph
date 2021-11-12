@@ -1,3 +1,5 @@
+import { Sensor } from './../../Sensor';
+import { StationHourlyAvg } from './../../StationHourlyAvg';
 import { HttpRequestService } from './../../services/requests/http-request.service';
 import { Component } from '@angular/core';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
@@ -37,8 +39,10 @@ export class HomepageComponent {
 	_date_to: string = '';
 
 	stations: Station[] = [];
-
-	stationHourlyAvg: StationAvg;
+	s: Sensor;
+	headers: string[] = ['Created on', 'Average', 'Unit', 'Sensor id', 'Sensor type'];
+	stationAvg: StationAvg;
+	sHourlyAvg: StationHourlyAvg[] = [];
 
 	max_date: Date = new Date();
 	constructor(public req: HttpRequestService, private title: TitleManagementService) {
@@ -51,18 +55,23 @@ export class HomepageComponent {
 
 	getStationAvg() {
 		let id = this.stations.filter((station) => {
-			return station.name == this.selected_station;
+			return station.name == this.selected_station; //this.selected_station;
 		})[0].id;
-		console.log(`${this._date_from} 00:00:00\n${this._date_to} 00:00:00`);
+		let d_from = `${this._date_from} 00:00:00.00`;
+		let d_to = `${this._date_to} 23:00:00.00`;
 
-		this.req.getStationAvg(id, `${this._date_from} 00:00:00`, `${this._date_to} 00:00:00`).subscribe((stAvg) => {
-			console.log(stAvg);
-
-			this.stationHourlyAvg = stAvg;
+		this.req.getStationAvg(id, d_from, d_to).subscribe((stAvg) => {
+			this.stationAvg = stAvg;
+			this.sHourlyAvg = stAvg.data_hourly_avg;
 			this._date_from = '';
 			this._date_to = '';
-			console.log(this.stationHourlyAvg);
+			this.date_from.setValue('');
+			this.date_to.setValue('');
 		});
+	}
+
+	showTable() {
+		return this.sHourlyAvg.length > 0;
 	}
 
 	date_fromInputHandler(event: any) {
