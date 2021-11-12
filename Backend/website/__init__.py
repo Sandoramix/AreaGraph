@@ -1,4 +1,5 @@
 # Imports
+from time import time
 from flask import Flask, make_response
 from flask.templating import render_template
 
@@ -40,20 +41,18 @@ def auth():
     if auth_passw != environ['jwt_password']:
         return make_response('Invalid password',  401, {'Login': 'Invalid password'})
 
-    expiration = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    expiration = time()*1000 + 3600000
     token = jwt.encode(
         {'user_id': auth_user, 'exp': expiration},
         environ['secret_key']
     )
     return jsonify({
         'token': token,
-        'expires_at': expiration.timestamp()
+        'expires_at': expiration
     })
 
 
-# error changed responses
-
-
+# Custom error responses
 @app.errorhandler(404)
 def not_found(err):
     return {"message": "Page not Found"}, 404

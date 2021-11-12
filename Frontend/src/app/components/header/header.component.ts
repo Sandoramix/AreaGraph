@@ -1,44 +1,35 @@
-import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from './../../services/title/title-management.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css']
+	selector: 'app-header',
+	templateUrl: './header.component.html',
+	styleUrls: ['./header.component.css'],
 })
-
-
-
 export class HeaderComponent implements OnInit {
-    referLinks: PageInformation[] = [
-        { title: 'Home', link: ['/home', '/'], value: 'Home' },
-        { title: 'Lookout', link: ['/lookout'], value: 'Start looking for zones' },
-        { title: 'About', link: ['/about'], value: 'About us' }
-    ]
+	referLinks: PageInformation[] = [
+		{ title: 'Home', link: '/', value: 'Home' },
+		{ title: 'About', link: '/about', value: 'About us' },
+	];
 
-    getReferByTitle(t: string): PageInformation {
-        return this.referLinks.filter((obj: PageInformation) => {
-            return obj.title.toLowerCase() === t.toLowerCase();
-        })[0]
-    }
+	getReferByTitle(t: string): PageInformation {
+		let tmp = this.referLinks.filter((obj: PageInformation) => {
+			return obj.title.toLowerCase() === t.toLowerCase();
+		});
+		console.log(tmp);
 
-    getReferLinks(): PageInformation[] {
-        return this.referLinks
-    }
-    constructor(public titleService: TitleManagementService, private http: HttpRequestService) {
-    }
+		return tmp[0];
+	}
 
-    ngOnInit(): void {
+	getReferLinks(): PageInformation[] {
+		return this.referLinks;
+	}
+	constructor(public titleService: TitleManagementService) {}
 
-    }
-    tryout() {
-        console.log(this.http.auth);
-
-    }
+	ngOnInit(): void {}
 }
 interface PageInformation {
-    title: string
-    link: string[] | string
-    value: string
+	title: string;
+	link: string;
+	value: string;
 }
