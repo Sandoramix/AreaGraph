@@ -1,4 +1,4 @@
-import { LookoutComponent } from './routes/lookout/lookout.component';
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './routes/about/about.component';
@@ -8,7 +8,6 @@ const routes: Routes = [
     { path: '', component: HomepageComponent },
     { path: 'home', component: HomepageComponent },
     { path: 'about', component: AboutComponent },
-    { path: 'lookout', component: LookoutComponent },
 ];
 
 @NgModule({
@@ -16,4 +15,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [HomepageComponent, AboutComponent, LookoutComponent];
+export const routingComponents = [HomepageComponent, AboutComponent];

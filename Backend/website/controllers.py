@@ -129,6 +129,7 @@ class StationDataAvgController(Resource):
                     *Dates must be in UTC format [YYYY-MM-DD HH-MM-SS.MS]
 
     """
+
     # Required headers
     parser = reqparse.RequestParser()
     parser.add_argument("station_id", type=int, help="No `station_id` parameter provided",
@@ -242,6 +243,7 @@ class Stations (Resource):
     - Return:
         - All avaiable stations
     """
+
     @token_required
     def get(self):
         return{

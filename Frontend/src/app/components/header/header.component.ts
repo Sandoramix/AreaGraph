@@ -12,15 +12,17 @@ import { Component, OnInit } from '@angular/core';
 
 export class HeaderComponent implements OnInit {
     referLinks: PageInformation[] = [
-        { title: 'Home', link: ['/home', '/'], value: 'Home' },
-        { title: 'Lookout', link: ['/lookout'], value: 'Start looking for zones' },
-        { title: 'About', link: ['/about'], value: 'About us' }
+        { title: 'Home', link: '/', value: 'Home' },
+        { title: 'About', link: '/about', value: 'About us' }
     ]
 
     getReferByTitle(t: string): PageInformation {
-        return this.referLinks.filter((obj: PageInformation) => {
+        let tmp = this.referLinks.filter((obj: PageInformation) => {
             return obj.title.toLowerCase() === t.toLowerCase();
-        })[0]
+        })
+        console.log(tmp);
+
+        return tmp[0]
     }
 
     getReferLinks(): PageInformation[] {
@@ -39,6 +41,6 @@ export class HeaderComponent implements OnInit {
 }
 interface PageInformation {
     title: string
-    link: string[] | string
+    link: string
     value: string
 }

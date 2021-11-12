@@ -17,7 +17,7 @@ export class TitleManagementService {
 	}
 
 	setSubTitle(sub: string): void {
-		this.titleSevice.setTitle(`${this.mainTitle} ${sub.toLowerCase() == 'home' ? '' : ` - ${sub}`}`);
+		this.titleSevice.setTitle(`${this.mainTitle} - ${sub}`);
 	}
 
 	getMainTitle(): string {
