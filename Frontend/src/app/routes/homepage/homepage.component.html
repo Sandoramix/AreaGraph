@@ -25,10 +25,31 @@
 
     </div>
     <!-- 
-        [ngClass]="validDates()?'':'disabled'"
+        
      -->
     <div class="btn_custom">
-        <button type="button" class="btn
+        <button [ngClass]="validDates()?'':'disabled'" type="button" class="btn
             btn-primary text-center bg-info" style="width: 10em;" (click)="getStationAvg()">Search</button>
     </div>
 </div>
+
+<table class="table" *ngIf="showTable()">
+    <thead>
+        <tr>
+            <th *ngFor="let i of headers"> {{i}}</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let st of sHourlyAvg">
+            <td>{{st.created_on}}</td>
+            <td>{{st.avg_value}}</td>
+            <td>{{st.sensor.unit}}</td>
+            <td>{{st.sensor.id}}</td>
+            <td>{{st.sensor.type}}</td>
+        </tr>
+
+
+        <!-- ['Created on', 'Average', 'Unit', 'Sensor id', 'Sensor type'] -->
+    </tbody>
+</table>
