@@ -170,7 +170,11 @@ class StationDataAvgController(Resource):
             `json`,status-code 
 
         """
+        # print(request.headers)
+        # print(request.view_args)
+
         req_args: dict = self.parser.parse_args()
+        # print(req_args)
         try:
             st_id: int = int(req_args['station_id'])
         except:
