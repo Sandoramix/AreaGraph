@@ -26,8 +26,8 @@ def reconnect():
     global db
     global cur
     # debug @TODO remove on finish
-    print(f'database connection = {db.closed}')
-    print(f'cursor connection = {cur.closed}')
+    #print(f'database connection = {db.closed}')
+    #print(f'cursor connection = {cur.closed}')
     # RECONNECT TO DB
     db = psp.connect(host=environ['host'], port=environ['port'],
                      database=environ['db'], user=environ['user'], password=environ['password'])
@@ -171,7 +171,10 @@ class StationDataAvgController(Resource):
 
         """
         req_args: dict = self.parser.parse_args()
-        st_id: int = req_args['station_id']
+        try:
+            st_id: int = int(req_args['station_id'])
+        except:
+            abort(400, f'station_id must be integer')
         # Break the request if the station id doesn't exist
         if not station_id_check(st_id):
             abort(400, f'station_id `{st_id}` doesn\'t exists')

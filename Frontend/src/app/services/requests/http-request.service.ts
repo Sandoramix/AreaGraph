@@ -8,11 +8,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class HttpRequestService {
-	auth: Auth;
-
-	stations: Station[] = [];
-
-	station_hourly_avg: StationAvg;
+	private auth: Auth;
 
 	constructor(private http: HttpClient) {
 		//this.getStationAvg(107, '2021-11-09 09:00:00', '2021-11-09 10:00:00.00')
@@ -25,12 +21,9 @@ export class HttpRequestService {
 		} else {
 			st_request = this.getAuth().pipe(switchMap((tk) => this.http.get(`${env.apiUrl}stations`, this.Headers(this.getToken()))));
 		}
-		st_request.subscribe((response: any) => {
-			this.stations = response.stations;
-		});
+		return st_request;
 	}
-
-	getStationAvg(st_id: number, dt_from: string, dt_to: string) {
+	getStationAvg(st_id: number, dt_from: string, dt_to: string): Observable<StationAvg> {
 		let form = new FormData();
 		form.append('station_id', st_id.toString());
 		form.append('date_from', dt_from);
@@ -43,9 +36,7 @@ export class HttpRequestService {
 		} else {
 			st_avg_request = this.getAuth().pipe(switchMap((auth) => this.http.post<StationAvg>(`${env.apiUrl}station_avg`, form, this.Headers(auth.token))));
 		}
-		st_avg_request.subscribe((response: StationAvg) => {
-			this.station_hourly_avg = response;
-		});
+		return st_avg_request;
 	}
 
 	private Headers(tk: string) {
