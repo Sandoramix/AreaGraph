@@ -1,10 +1,14 @@
 import { env } from 'src/environments/environment.dev';
-import { Station } from 'src/app/Station';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { StationAvg } from 'src/app/StationAvg';
+import { StationAvg } from 'src/utils/StationAvg';
 import { Observable } from 'rxjs';
+
+interface Auth {
+	token: string;
+	expires_at: number;
+}
 
 @Injectable()
 export class HttpRequestService {
@@ -83,6 +87,11 @@ export class HttpRequestService {
 			);
 	}
 
+	private getToken() {
+		let token = localStorage.getItem('auth_key');
+		return token != null ? token : '';
+	}
+
 	private checkCookie() {
 		let cookie = this.getCookie();
 
@@ -103,18 +112,8 @@ export class HttpRequestService {
 		};
 	}
 
-	private getToken() {
-		let token = localStorage.getItem('auth_key');
-		return token != null ? token : '';
-	}
-
 	private setCookie(tk: string, expiration: number) {
 		localStorage.setItem('auth_key', tk);
 		localStorage.setItem('expires_at', expiration.toString());
 	}
-}
-
-class Auth {
-	token: string;
-	expires_at: number;
 }
