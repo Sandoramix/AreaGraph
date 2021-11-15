@@ -3,9 +3,9 @@
 
         <div class="chart-select_container">
             <select class="select_custom chart-select-type" name="sensor_type_select" [(ngModel)]='selected_sensor_type' (change)="updateChart()">
-				<option value="">Select Sensor</option>
-				<option *ngFor="let i of station_values" [ngValue]="i">{{i}}</option>
-			</select>
+                <option value="">Select Sensor</option>
+                <option *ngFor="let i of station_values" [ngValue]="i">{{i}}</option>
+            </select>
         </div>
     </div>
 
