@@ -1,55 +1,40 @@
-<div class="select_container">
-    <select name="station_list" class="bg-secondary text-center text-white
-        select_custom border border-dark" (change)="selectedStationHandler($event)">
-        <option value="" selected>Select Station</option>
-        <option *ngFor="let item of stations" value="{{item.name}}">{{item.name}}</option>
-    </select>
-</div>
-<!--  -->
-<div class="mx-auto" style="width:
-    fit-content" *ngIf="selected_station!==''">
-    <div class="mt-1">
-        <mat-form-field appearance="fill" class="mr-3 bg-light">
-            <mat-label class="text-primary">Choose start date</mat-label>
-            <input readonly matInput [matDatepicker]="startpicker" [value]="_date_from" [max]="max_date" (dateInput)="date_fromInputHandler($event)" (dateChange)="date_fromInputHandler($event)">
-            <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-            <mat-datepicker #startpicker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="bg-light">
-            <mat-label class="text-primary">Choose end date</mat-label>
-            <input readonly matInput [matDatepicker]="endpicker" [value]="date_to.value" [min]="date_from.value" [max]="max_date" (dateInput)="date_toInputHandler($event)" (dateChange)="date_toInputHandler($event)">
-            <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-            <mat-datepicker #endpicker></mat-datepicker>
-        </mat-form-field>
-
+<div class="cnt">
+    <div class="select_container">
+        <select name="station_list" class="bg-secondary text-center text-white
+            select_custom border border-dark" [(ngModel)]="selected_station">
+            <option value="" selected>Select Station</option>
+            <option *ngFor="let item of stations" [ngValue]="item.name">{{item.name}}</option>
+        </select>
     </div>
-    <!-- 
-        
-     -->
-    <div class="btn_custom">
-        <button [ngClass]="validDates()?'':'disabled'" type="button" class="btn
-            btn-primary text-center bg-info" style="width: 10em;" (click)="getStationAvg()">Search</button>
+    <!--  -->
+    <div class="mx-auto datepicker" style="width:
+        fit-content" *ngIf="selected_station!==''">
+        <div class="mt-1">
+            <mat-form-field appearance="fill" class="mr-3">
+                <mat-label class="text-primary">Choose start date</mat-label>
+                <input readonly matInput [matDatepicker]="startpicker" [value]="date_from.value" [max]="max_date" (dateInput)="date_fromInputHandler($event)" (dateChange)="date_fromInputHandler($event)">
+                <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+                <mat-datepicker #startpicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label class="text-primary">Choose end date</mat-label>
+                <input readonly matInput [matDatepicker]="endpicker" [value]="date_to.value" [min]="date_from.value" [max]="max_date" (dateInput)="date_toInputHandler($event)" (dateChange)="date_toInputHandler($event)">
+                <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+                <mat-datepicker #endpicker></mat-datepicker>
+            </mat-form-field>
+
+        </div>
+
+        <div class="btn_custom">
+            <button [ngClass]="validDates()?'':'disabled'" type="button" class="btn
+                btn-primary text-center bg-info" style="width: 10em;" (click)="getStationAvg()">Search</button>
+        </div>
+    </div>
+
+
+    <div class="chart-container" ngClass="{{sHourlyAvg.length>0
+        ?'active':'inactive'}}">
+        <app-linechart [data]="sHourlyAvg"></app-linechart>
     </div>
 </div>
-
-<table class="table" *ngIf="showTable()">
-    <thead>
-        <tr>
-            <th *ngFor="let i of headers"> {{i}}</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        <tr *ngFor="let st of sHourlyAvg">
-            <td>{{st.created_on}}</td>
-            <td>{{st.avg_value}}</td>
-            <td>{{st.sensor.unit}}</td>
-            <td>{{st.sensor.id}}</td>
-            <td>{{st.sensor.type}}</td>
-        </tr>
-
-
-        <!-- ['Created on', 'Average', 'Unit', 'Sensor id', 'Sensor type'] -->
-    </tbody>
-</table>
