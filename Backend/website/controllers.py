@@ -2,6 +2,7 @@
 from functools import wraps
 import datetime
 from os import environ
+import os
 from flask.helpers import make_response
 from flask_restful import Resource, reqparse
 import psycopg2 as psp
@@ -25,9 +26,6 @@ cur = db.cursor()
 def reconnect():
     global db
     global cur
-    # debug @TODO remove on finish
-    #print(f'database connection = {db.closed}')
-    #print(f'cursor connection = {cur.closed}')
     # RECONNECT TO DB
     db = psp.connect(host=environ['host'], port=environ['port'],
                      database=environ['db'], user=environ['user'], password=environ['password'])
@@ -48,6 +46,8 @@ def execute_query(query: str, fetch_n: int or None = None):
     if cur.closed or db.closed:
         print("reconnecting to database")
         reconnect()
+        from time import sleep
+        sleep(5)
 
     # query
     cur.execute(query)
@@ -95,6 +95,14 @@ def station_id_check(id: int) -> bool:
     if not execute_query(f'select * from station where id = {id}', fetch_n=1):
         return False
     return True
+
+
+def getStationByID(id: int):
+    station = execute_query(
+        f'select * from station where id = {id}', fetch_n=1)
+    if not station:
+        return {}
+    return station_tuple_to_json(station)
 
 
 def station_tuple_to_json(info: tuple, i: int = 0):
@@ -174,11 +182,13 @@ class StationDataAvgController(Resource):
         # print(request.view_args)
 
         req_args: dict = self.parser.parse_args()
+        st_id: int = int(req_args['station_id'])
+        # except:
         # print(req_args)
-        try:
-            st_id: int = int(req_args['station_id'])
-        except:
-            abort(400, f'station_id must be integer')
+        # try:
+        #     st_id: int = int(req_args['station_id'])
+        # except:
+        #     abort(400, f'station_id must be integer')
         # Break the request if the station id doesn't exist
         if not station_id_check(st_id):
             abort(400, f'station_id `{st_id}` doesn\'t exists')
@@ -187,7 +197,7 @@ class StationDataAvgController(Resource):
         date_from: str = req_args['date_from'].strip()
         date_to: str = req_args['date_to'].strip()
 
-        # @TODO IMPROVE? [DATES VALIDATION]
+        # [DATES VALIDATION]
         valid_date: bool = True
         try:
             date_from_splitted: str = date_from.split('.')[0]
@@ -213,6 +223,11 @@ class StationDataAvgController(Resource):
         # All fetched records
         records: list[tuple] = execute_query(query, fetch_n=0)
 
+        if len(records) == 0:
+            return{
+                'station': getStationByID(st_id),
+                'data_hourly_avg': []
+            }
         # first row. Need for station informations
         info = records[0]
         return {
@@ -232,7 +247,7 @@ class StationDataAvgController(Resource):
             json serializable object
         """
         return{
-            "created_on": info[0].strftime("%Y-%m-%d %H:%M:%S.%f"),
+            "created_on": info[0].strftime("%Y-%m-%d %H:%M:%S"),
             "avg_value": info[1],
             "sensor": {
                 "id": info[2],
