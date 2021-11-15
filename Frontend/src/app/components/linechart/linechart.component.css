@@ -1,0 +1,32 @@
+.chart-select_container {
+    flex-basis: 33%;
+}
+
+.chart-select-type {
+    color: var(--success);
+    background-color: #221d53;
+    transform: translateX(-5px);
+    transform: translateY(6px);
+    transition: transform 400ms ease-in-out;
+}
+
+.chart-select-type:focus {
+    transform: translateY(-5px);
+}
+
+.chart-topline {
+    display: flex;
+}
+
+.chart-container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -5;
+}
+
+.select_custom {
+    height: 3em;
+    width: 10em;
+    border-radius: 5px;
+}
