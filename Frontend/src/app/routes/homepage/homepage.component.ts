@@ -73,8 +73,6 @@ export class HomepageComponent implements OnInit {
 		})[0].id;
 		let d_from = `${this._date_from} 00:00:00.00`;
 		let d_to = `${this._date_to} 23:00:00.00`;
-		console.warn(d_from);
-		console.warn(d_to);
 
 		this.req.getStationAvg(id, d_from, d_to).subscribe((stAvg) => {
 			this.stationAvg = stAvg;
