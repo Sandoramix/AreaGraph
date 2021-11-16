@@ -3,7 +3,7 @@
         <select name="station_list" class="bg-secondary text-center text-white
             select_custom border border-dark" [(ngModel)]="selected_station">
             <option value="" selected>Select Station</option>
-            <option *ngFor="let item of stations" [ngValue]="item.name">{{item.name}}</option>
+            <option *ngFor="let item of stations" [value]="item.name">{{item.name}}</option>
         </select>
     </div>
     <!--  -->
@@ -12,14 +12,20 @@
         <div class="mt-1">
             <mat-form-field appearance="fill" class="mr-3">
                 <mat-label class="text-primary">Choose start date</mat-label>
-                <input readonly matInput [matDatepicker]="startpicker" [value]="date_from.value" [max]="max_date" (dateInput)="date_fromInputHandler($event)" (dateChange)="date_fromInputHandler($event)">
+                <input readonly matInput [matDatepicker]="startpicker"
+                    [value]="date_from.value" [max]="max_date"
+                    (dateInput)="date_fromInputHandler($event)"
+                    (dateChange)="date_fromInputHandler($event)">
                 <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
                 <mat-datepicker #startpicker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
                 <mat-label class="text-primary">Choose end date</mat-label>
-                <input readonly matInput [matDatepicker]="endpicker" [value]="date_to.value" [min]="date_from.value" [max]="max_date" (dateInput)="date_toInputHandler($event)" (dateChange)="date_toInputHandler($event)">
+                <input readonly matInput [matDatepicker]="endpicker"
+                    [value]="date_to.value" [min]="date_from.value"
+                    [max]="max_date" (dateInput)="date_toInputHandler($event)"
+                    (dateChange)="date_toInputHandler($event)">
                 <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
                 <mat-datepicker #endpicker></mat-datepicker>
             </mat-form-field>
@@ -27,14 +33,16 @@
         </div>
 
         <div class="btn_custom">
-            <button [ngClass]="validDates()?'':'disabled'" type="button" class="btn
-                btn-primary text-center bg-info" style="width: 10em;" (click)="getStationAvg()">Search</button>
+            <button [disabled]="!validDates()" type="button" class="btn
+                btn-primary text-center bg-info" style="width: 10em;"
+                (click)="getStationAvg()">Search</button>
         </div>
     </div>
 
 
-    <div class="chart-container" ngClass="{{sHourlyAvg.length>0
+    <div class="chart-container" ngClass="{{sHourlyAvg && sHourlyAvg.length>0
         ?'active':'inactive'}}">
-        <app-linechart [data]="sHourlyAvg"></app-linechart>
+        <app-linechart [data]="sHourlyAvg" [enabled]="sHourlyAvg!=null &&
+            sHourlyAvg.length>0"></app-linechart>
     </div>
 </div>

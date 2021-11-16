@@ -2,7 +2,7 @@ import { EChartsOption } from 'echarts';
 import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FormControl } from '@angular/forms';
 
@@ -45,25 +45,36 @@ export class HomepageComponent implements OnInit {
 
 	headers: string[] = ['Created on', 'Average', 'Unit', 'Sensor id', 'Sensor type'];
 	stationAvg: StationAvg;
-	sHourlyAvg: StationHourlyAvg[] = [];
+	sHourlyAvg: StationHourlyAvg[] | null = null;
 
-	constructor(public req: HttpRequestService, private title: TitleManagementService) {
+	constructor(public req: HttpRequestService, private title: TitleManagementService, private cd: ChangeDetectorRef) {
 		title.setSubTitle('Home');
 
-		req.getAllStations().subscribe((res: any) => {
-			this.stations = res.stations;
+		req.getAllStations().subscribe({
+			next: (res: any) => {
+				this.stations = res.stations;
+			},
+			error: (err) => {
+				alert('Connection error... please try again later.');
+			},
 		});
 	}
 
 	ngOnInit() {
-		// this.req.getStationAvg(107, '2021-11-09 00:00:00', '2021-11-09 23:00:00.00').subscribe((stAvg) => {
+		// this.req.getStationAvg(107, '2021-11-05 00:00:00', '2021-11-10 23:00:00.00').subscribe((stAvg) => {
 		// 	this.stationAvg = stAvg;
+		// 	let tmpAvg = stAvg.data_hourly_avg;
+		// 	if (tmpAvg == null || tmpAvg.length == 0) {
+		// 		alert("This station doesn't have any records in this date range");
+		// 		return;
+		// 	}
 		// 	this.sHourlyAvg = stAvg.data_hourly_avg;
 		// 	//
 		// 	this._date_from = '';
 		// 	this._date_to = '';
 		// 	this.date_from.setValue('');
 		// 	this.date_to.setValue('');
+		// 	console.log('go for it');
 		// });
 	}
 
@@ -76,7 +87,15 @@ export class HomepageComponent implements OnInit {
 
 		this.req.getStationAvg(id, d_from, d_to).subscribe((stAvg) => {
 			this.stationAvg = stAvg;
+			let tmpAvg = stAvg.data_hourly_avg;
+
+			if (tmpAvg == null || tmpAvg.length == 0) {
+				alert("This station doesn't have any records within this date range\nOr the station is unused");
+				// alert();
+				return;
+			}
 			this.sHourlyAvg = stAvg.data_hourly_avg;
+
 			this._date_from = '';
 			this._date_to = '';
 			this.date_from.setValue('');
@@ -86,7 +105,9 @@ export class HomepageComponent implements OnInit {
 
 	date_fromInputHandler(event: any) {
 		this.date_from.setValue(new Date(event.value));
-		this.date_to.setValue('');
+		if (this.date_from.value > this.date_to.value) {
+			this.date_to.setValue('');
+		}
 
 		this._date_from = event.value.format(MY_FORMATS.display.dateInput);
 	}
@@ -98,7 +119,7 @@ export class HomepageComponent implements OnInit {
 	}
 
 	validDates(): boolean {
-		if (this._date_from != '' && this._date_to != '') return true;
+		if (this._date_from !== '' && this._date_to !== '') return true;
 		return false;
 	}
 }

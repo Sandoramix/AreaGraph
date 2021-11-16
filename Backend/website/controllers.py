@@ -43,15 +43,15 @@ def execute_query(query: str, fetch_n: int or None = None):
         if `fetch_n` = (0 -> all | N -> N) => list[tuple]; 1 => tuple; None => _cursor
     """
     # Reconnect in case of disconnection from database
-    if cur.closed or db.closed:
+
+    if db.closed:
         print("reconnecting to database")
         reconnect()
         from time import sleep
         sleep(5)
-
+    cur = db.cursor()
     # query
-    cur.execute(query)
-
+    data = cur.execute(query)
     if fetch_n == None:
         return cur
     if fetch_n == 0:
@@ -217,9 +217,10 @@ class StationDataAvgController(Resource):
             abort(406, "DATE/S INVALID")
 
         # Format the query with right values
+        cur = db.cursor()
         query: str = cur.mogrify(
             self.fetch_between_dates, (st_id, date_from, date_to))
-
+        cur.close()
         # All fetched records
         records: list[tuple] = execute_query(query, fetch_n=0)
 
@@ -260,7 +261,7 @@ class StationDataAvgController(Resource):
 # ----------------------------------------------------------------------------------------------
 
 
-class Stations (Resource):
+class AllStations (Resource):
     """HTTP Methods controller for station table requests
     - Return:
         - All avaiable stations
@@ -271,6 +272,21 @@ class Stations (Resource):
         return{
             "stations": [
                 station_tuple_to_json(i) for i in execute_query("select st.id,st.name,st.latitude,st.longitude from station as st", fetch_n=0)
+            ]
+        }, 200
+
+
+class WorkingStations(Resource):
+    """HTTP Methods controller for station table requests
+    - Return:
+        - All working stations
+    """
+
+    @token_required
+    def get(self):
+        return{
+            "stations": [
+                station_tuple_to_json(i) for i in execute_query("select distinct st.id,st.name,st.latitude,st.longitude from station_data_hourly_avg as sdha inner join station as st on sdha.station_id = st.id", fetch_n=0)
             ]
         }, 200
 # ----------------------------------------------------------------------------------------------

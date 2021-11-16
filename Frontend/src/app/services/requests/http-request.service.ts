@@ -1,9 +1,9 @@
 import { env } from 'src/environments/environment.dev';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { StationAvg } from 'src/utils/StationAvg';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 
 interface Auth {
 	token: string;
@@ -12,8 +12,6 @@ interface Auth {
 
 @Injectable()
 export class HttpRequestService {
-	private auth: Auth;
-
 	constructor(private http: HttpClient) {
 		// this.getStationAvg(107, '2021-11-09 09:00:00', '2021-11-09 10:00:00.00').subscribe((x) => {
 		// 	console.warn(x);
@@ -23,13 +21,13 @@ export class HttpRequestService {
 	getAllStations() {
 		let st_request: Observable<Object>;
 		if (this.checkCookie()) {
-			st_request = this.http.get(`${env.apiUrl}stations`, {
+			st_request = this.http.get(`${env.apiUrl}all_stations`, {
 				headers: this.Headers(this.getToken()),
 			});
 		} else {
 			st_request = this.getAuth().pipe(
 				switchMap((tk) =>
-					this.http.get(`${env.apiUrl}stations`, {
+					this.http.get(`${env.apiUrl}all_stations`, {
 						headers: this.Headers(this.getToken()),
 					}),
 				),
@@ -38,7 +36,25 @@ export class HttpRequestService {
 		return st_request;
 	}
 
-	getStationAvg(st_id: number, dt_from: string, dt_to: string) {
+	getWorkingStations() {
+		let st_request: Observable<Object>;
+		if (this.checkCookie()) {
+			st_request = this.http.get(`${env.apiUrl}working_stations`, {
+				headers: this.Headers(this.getToken()),
+			});
+		} else {
+			st_request = this.getAuth().pipe(
+				switchMap((tk) =>
+					this.http.get(`${env.apiUrl}working_stations`, {
+						headers: this.Headers(this.getToken()),
+					}),
+				),
+			);
+		}
+		return st_request;
+	}
+
+	getStationAvg(st_id: number, dt_from: string, dt_to: string): Observable<StationAvg> {
 		let body = new FormData();
 		body.set('station_id', st_id.toString());
 		body.set('date_from', dt_from);

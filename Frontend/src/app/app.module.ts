@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -20,16 +21,18 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { FormsModule } from '@angular/forms';
 import { LinechartComponent } from './components/linechart/linechart.component';
 
-const datePickerModules = [MatNativeDateModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MomentDateModule];
+const matModules = [MatNativeDateModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MomentDateModule, MatSelectModule];
 
 @NgModule({
 	declarations: [AppComponent, HeaderComponent, routingComponents, LinechartComponent],
 	imports: [
-		datePickerModules,
+		matModules,
 		BrowserModule,
-		HttpClientModule,
 		BrowserAnimationsModule,
+
+		HttpClientModule,
 		AppRoutingModule,
+
 		FormsModule,
 
 		NgxEchartsModule.forRoot({

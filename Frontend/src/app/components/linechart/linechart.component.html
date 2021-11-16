@@ -1,15 +1,26 @@
-<div class="chart-container">
+<div class="chart-container" *ngIf="enabled">
     <div class="chart-topline">
 
         <div class="chart-select_container">
-            <select class="select_custom chart-select-type" name="sensor_type_select" [(ngModel)]='selected_sensor_type' (change)="updateChart()">
-                <option value="">Select Sensor</option>
-                <option *ngFor="let i of station_values" [ngValue]="i">{{i}}</option>
+            <select class="select_custom chart-select-type" name="sensor_select"
+                [(ngModel)]="selected_sensor_type"
+                (ngModelChange)="updateChart()">
+                <option [value]="">Select Sensor</option>
+                <option *ngFor="let i of station_values" [value]="i">{{i}}</option>
             </select>
         </div>
     </div>
 
     <div class="main-chart">
-        <div echarts class="chart" [options]="chart_options" (chartInit)="chartInit($event)" theme="dark"></div>
+        <div echarts class="chart" [options]="chart_options"
+            (chartInit)="chartInit($event)" theme="dark"></div>
     </div>
+    <!-- <mat-form-field style="width: 45%; display: inline-block; margin-right:
+        40px;">
+        <mat-select [(ngModel)]="selected_sensor_type" [ngModelOptions]="{ }"
+            (ngModelChange)="log($event)" (valueChange)="updateChart()">
+            <mat-option [value]="">Select Sensor </mat-option>
+            <mat-option *ngFor="let i of station_values" [value]="i">{{i}}</mat-option>
+        </mat-select>
+    </mat-form-field> -->
 </div>
