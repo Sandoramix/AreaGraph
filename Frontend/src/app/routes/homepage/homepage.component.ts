@@ -64,15 +64,19 @@ export class HomepageComponent implements OnInit {
 		});
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.getStationAvg(107, '2021-11-01 00:00:00.00', '2021-11-10 23:00:00.00');
+	}
 
-	getStationAvg(): void {
+	getStationHandler() {
 		let id = this.stations.filter((station) => {
 			return station.name === this.selected_station;
 		})[0].id;
 		let d_from = `${this._date_from} 00:00:00.00`;
 		let d_to = `${this._date_to} 23:00:00.00`;
+	}
 
+	getStationAvg(id: number, d_from: string, d_to: string): void {
 		this.req.getStationAvg(id, d_from, d_to).subscribe({
 			next: (stAvg) => {
 				this.stationAvg = stAvg;

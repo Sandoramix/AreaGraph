@@ -1,5 +1,5 @@
 import { StationHourlyAvg } from 'src/utils/StationHourlyAvg';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { Chart_custom } from 'src/utils/Chart-class';
 
@@ -20,7 +20,16 @@ export class LinechartComponent implements OnInit {
 	@Input() data: StationHourlyAvg[] | null = null;
 	@Input() enabled: boolean;
 
-	constructor() {}
+	constructor(private renderer: Renderer2) {
+		this.renderer.listen('window', 'click', (e: Event) => {
+			let info: any = e.target;
+			let _class: string = info.classList[0];
+			if (_class != 'info-content' && _class != 'info-icon') {
+				this.infoDropdownToggle();
+			}
+		});
+	}
+
 	ngOnInit(): void {
 		this.main_chart = null;
 		this.chart_options = this.chart_class.newLineChart();
@@ -69,6 +78,28 @@ export class LinechartComponent implements OnInit {
 					notMerge: false,
 				},
 			);
+		}
+	}
+
+	infoDropdownToggle() {
+		let info_dropdown = document ? document.getElementById('dropdown') : null;
+		if (!info_dropdown) return;
+		info_dropdown.classList.toggle('show');
+	}
+
+	fun(e: Event) {
+		let ev = e.target;
+		if (!ev) return;
+		//  .matches('.dropbtn')
+		if (!ev) {
+			var dropdowns = document.getElementsByClassName('dropdown-content');
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
 		}
 	}
 }

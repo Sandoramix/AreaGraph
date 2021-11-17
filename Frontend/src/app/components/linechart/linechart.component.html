@@ -1,24 +1,34 @@
 <div class="chart-container" *ngIf="enabled">
-    <div class="chart-topline">
+	<div class="chart-topline">
+		<select class="select_custom chart-select-type" name="sensor_select" [(ngModel)]="selected_sensor_type" (ngModelChange)="updateHandler()">
+			<option value="" class="select-option">Select Sensor</option>
+			<option *ngFor="let i of station_values" [value]="i" class="select-option">
+				{{ i }}
+			</option>
+		</select>
 
-        <div>
-            <select class="select_custom chart-select-type" name="sensor_select"
-                [(ngModel)]="selected_sensor_type"
-                (ngModelChange)="updateHandler()">
-                <option value="" class="select-option">Select Sensor</option>
-                <option
-                    *ngFor="let i of station_values"
-                    [value]="i"
-                    class="select-option">
-                    {{i}}
-                </option>
-            </select>
-        </div>
-    </div>
+		<div id="info-dropdown">
+			<svg (click)="infoDropdownToggle()" fill="#221d53" class="info-icon" viewBox="0 0 16 16">
+				<path
+					d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8
+                    0a8
+                    8 0 0 0 0 16z"
+				/>
+				<path
+					d="m8.93
+                        6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738
+                        3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252
+                        1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                        0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2
+                        0 1
+                        1 0 0 1 2 0z"
+				/>
+			</svg>
+			<div id="dropdown" class="info-content">ciao</div>
+		</div>
+	</div>
 
-    <div class="main-chart">
-        <div echarts class="chart" [options]="chart_options"
-            (chartInit)="chartInit($event)" theme="dark">
-        </div>
-    </div>
+	<div class="main-chart">
+		<div echarts class="chart" [options]="chart_options" (chartInit)="chartInit($event)" theme="dark"></div>
+	</div>
 </div>
