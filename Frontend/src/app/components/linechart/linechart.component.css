@@ -1,13 +1,9 @@
-.chart-select_container {
-    flex-basis: 33%;
-}
-
 .chart-select-type {
-    color: var(--success);
+    color: greenyellow;
     background-color: #221d53;
     transform: translateX(-5px);
     transform: translateY(6px);
-    transition: transform 400ms ease-in-out;
+    transition: transform 350ms ease-in-out;
 }
 
 .chart-select-type:focus {
@@ -16,17 +12,23 @@
 
 .chart-topline {
     display: flex;
+    flex: 1 0 33%;
 }
 
 .chart-container {
     width: 99%;
     margin-left: auto;
     margin-right: auto;
-    z-index: -5;
 }
 
 .select_custom {
     height: 3em;
     width: 10em;
     border-radius: 5px;
+    text-align-last: center;
+}
+
+.select-option {
+    text-align: center;
+    border: 1px solid gray
 }
