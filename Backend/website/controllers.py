@@ -23,13 +23,17 @@ db = psp.connect(host=environ['host'], port=environ['port'],
 cur = db.cursor()
 
 
-def reconnect():
+def connect():
     global db
     global cur
-    # RECONNECT TO DB
     db = psp.connect(host=environ['host'], port=environ['port'],
                      database=environ['db'], user=environ['user'], password=environ['password'])
     cur = db.cursor()
+
+
+def disconnect():
+    db.close()
+    cur.close()
 
 
 def execute_query(query: str, fetch_n: int or None = None):
@@ -43,14 +47,13 @@ def execute_query(query: str, fetch_n: int or None = None):
         if `fetch_n` = (0 -> all | N -> N) => list[tuple]; 1 => tuple; None => _cursor
     """
     # Reconnect in case of disconnection from database
+    connect()
+    data = execute(query, fetch_n)
+    disconnect()
+    return data
 
-    if db.closed:
-        print("reconnecting to database")
-        reconnect()
-        from time import sleep
-        sleep(5)
-    cur = db.cursor()
-    # query
+
+def execute(query: str, fetch_n: int or None = None):
     data = cur.execute(query)
     if fetch_n == None:
         return cur
@@ -100,6 +103,7 @@ def station_id_check(id: int) -> bool:
 def getStationByID(id: int):
     station = execute_query(
         f'select * from station where id = {id}', fetch_n=1)
+
     if not station:
         return {}
     return station_tuple_to_json(station)
@@ -217,10 +221,10 @@ class StationDataAvgController(Resource):
             abort(406, "DATE/S INVALID")
 
         # Format the query with right values
-        cur = db.cursor()
+        connect()
         query: str = cur.mogrify(
             self.fetch_between_dates, (st_id, date_from, date_to))
-        cur.close()
+        disconnect()
         # All fetched records
         records: list[tuple] = execute_query(query, fetch_n=0)
 

@@ -11,5 +11,3 @@ if __name__ == "__main__":
     # production
     server = WSGIServer(('0.0.0.0', 8888), app)
     server.serve_forever()
-
-    db.close()
