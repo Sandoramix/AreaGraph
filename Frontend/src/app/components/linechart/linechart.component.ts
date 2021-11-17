@@ -25,7 +25,7 @@ export class LinechartComponent implements OnInit {
 			let info: any = e.target;
 			let _class: string = info.classList[0];
 			if (_class != 'info-content' && _class != 'info-icon') {
-				this.infoDropdownToggle();
+				this.infoDropdownRemove();
 			}
 		});
 	}
@@ -44,6 +44,7 @@ export class LinechartComponent implements OnInit {
 			this.data = datas;
 			this.selected_sensor_type = '';
 		}
+
 		this.updateChart();
 	}
 
@@ -87,19 +88,9 @@ export class LinechartComponent implements OnInit {
 		info_dropdown.classList.toggle('show');
 	}
 
-	fun(e: Event) {
-		let ev = e.target;
-		if (!ev) return;
-		//  .matches('.dropbtn')
-		if (!ev) {
-			var dropdowns = document.getElementsByClassName('dropdown-content');
-			var i;
-			for (i = 0; i < dropdowns.length; i++) {
-				var openDropdown = dropdowns[i];
-				if (openDropdown.classList.contains('show')) {
-					openDropdown.classList.remove('show');
-				}
-			}
-		}
+	private infoDropdownRemove() {
+		let info_dropdown = document ? document.getElementById('dropdown') : null;
+		if (!info_dropdown) return;
+		info_dropdown.classList.remove('show');
 	}
 }
