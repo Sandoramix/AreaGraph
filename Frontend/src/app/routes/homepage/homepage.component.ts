@@ -1,8 +1,9 @@
+import { LinechartComponent } from './../../components/linechart/linechart.component';
 import { EChartsOption } from 'echarts';
 import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
-import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FormControl } from '@angular/forms';
 
@@ -47,6 +48,8 @@ export class HomepageComponent implements OnInit {
 	stationAvg: StationAvg;
 	sHourlyAvg: StationHourlyAvg[] | null = null;
 
+	@ViewChild(LinechartComponent) linechart: LinechartComponent;
+
 	constructor(public req: HttpRequestService, private title: TitleManagementService, private cd: ChangeDetectorRef) {
 		title.setSubTitle('Home');
 
@@ -55,55 +58,44 @@ export class HomepageComponent implements OnInit {
 				this.stations = res.stations;
 			},
 			error: (err) => {
-				alert('Connection error... please try again later.');
+				alert('Connection error... Try again later.');
+				//location.reload();
 			},
 		});
 	}
 
-	ngOnInit() {
-		// this.req.getStationAvg(107, '2021-11-05 00:00:00', '2021-11-10 23:00:00.00').subscribe((stAvg) => {
-		// 	this.stationAvg = stAvg;
-		// 	let tmpAvg = stAvg.data_hourly_avg;
-		// 	if (tmpAvg == null || tmpAvg.length == 0) {
-		// 		alert("This station doesn't have any records in this date range");
-		// 		return;
-		// 	}
-		// 	this.sHourlyAvg = stAvg.data_hourly_avg;
-		// 	//
-		// 	this._date_from = '';
-		// 	this._date_to = '';
-		// 	this.date_from.setValue('');
-		// 	this.date_to.setValue('');
-		// 	console.log('go for it');
-		// });
-	}
+	ngOnInit() {}
 
-	getStationAvg() {
+	getStationAvg(): void {
 		let id = this.stations.filter((station) => {
 			return station.name === this.selected_station;
 		})[0].id;
 		let d_from = `${this._date_from} 00:00:00.00`;
 		let d_to = `${this._date_to} 23:00:00.00`;
 
-		this.req.getStationAvg(id, d_from, d_to).subscribe((stAvg) => {
-			this.stationAvg = stAvg;
-			let tmpAvg = stAvg.data_hourly_avg;
-
-			if (tmpAvg == null || tmpAvg.length == 0) {
-				alert("This station doesn't have any records within this date range\nOr the station is unused");
-				// alert();
-				return;
-			}
-			this.sHourlyAvg = stAvg.data_hourly_avg;
-
-			this._date_from = '';
-			this._date_to = '';
-			this.date_from.setValue('');
-			this.date_to.setValue('');
+		this.req.getStationAvg(id, d_from, d_to).subscribe({
+			next: (stAvg) => {
+				this.stationAvg = stAvg;
+				let tmpAvg = stAvg.data_hourly_avg;
+				if (tmpAvg == null || tmpAvg.length == 0) {
+					alert("This station doesn't have any records in this date range");
+					return;
+				}
+				this.sHourlyAvg = stAvg.data_hourly_avg;
+				this._date_from = '';
+				this._date_to = '';
+				this.date_from.setValue('');
+				this.date_to.setValue('');
+				this.linechart.updateHandler(this.sHourlyAvg);
+			},
+			error: (err) => {
+				alert('Internal server error. Try again later');
+				console.warn(err);
+			},
 		});
 	}
 
-	date_fromInputHandler(event: any) {
+	date_fromInputHandler(event: any): void {
 		this.date_from.setValue(new Date(event.value));
 		if (this.date_from.value > this.date_to.value) {
 			this.date_to.setValue('');
@@ -112,7 +104,7 @@ export class HomepageComponent implements OnInit {
 		this._date_from = event.value.format(MY_FORMATS.display.dateInput);
 	}
 
-	date_toInputHandler(event: any) {
+	date_toInputHandler(event: any): void {
 		this.date_to.setValue(new Date(event.value));
 
 		this._date_to = event.value.format(MY_FORMATS.display.dateInput);
@@ -121,5 +113,9 @@ export class HomepageComponent implements OnInit {
 	validDates(): boolean {
 		if (this._date_from !== '' && this._date_to !== '') return true;
 		return false;
+	}
+
+	selectHandler() {
+		this.sHourlyAvg = [];
 	}
 }
