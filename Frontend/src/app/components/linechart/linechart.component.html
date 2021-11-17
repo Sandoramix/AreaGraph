@@ -1,15 +1,24 @@
-<div class="chart-container">
+<div class="chart-container" *ngIf="enabled">
     <div class="chart-topline">
 
-        <div class="chart-select_container">
-            <select class="select_custom chart-select-type" name="sensor_type_select" [(ngModel)]='selected_sensor_type' (change)="updateChart()">
-                <option value="">Select Sensor</option>
-                <option *ngFor="let i of station_values" [ngValue]="i">{{i}}</option>
+        <div>
+            <select class="select_custom chart-select-type" name="sensor_select"
+                [(ngModel)]="selected_sensor_type"
+                (ngModelChange)="updateHandler()">
+                <option value="" class="select-option">Select Sensor</option>
+                <option
+                    *ngFor="let i of station_values"
+                    [value]="i"
+                    class="select-option">
+                    {{i}}
+                </option>
             </select>
         </div>
     </div>
 
     <div class="main-chart">
-        <div echarts class="chart" [options]="chart_options" (chartInit)="chartInit($event)" theme="dark"></div>
+        <div echarts class="chart" [options]="chart_options"
+            (chartInit)="chartInit($event)" theme="dark">
+        </div>
     </div>
 </div>

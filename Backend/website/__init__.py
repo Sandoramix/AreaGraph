@@ -19,7 +19,8 @@ api = Api(app)
 
 # routes
 api.add_resource(StationDataAvgController, "/api/station_avg")
-api.add_resource(Stations, '/api/stations')
+api.add_resource(AllStations, '/api/all_stations')
+api.add_resource(WorkingStations, '/api/working_stations')
 
 
 @app.route('/')

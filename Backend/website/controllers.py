@@ -23,13 +23,17 @@ db = psp.connect(host=environ['host'], port=environ['port'],
 cur = db.cursor()
 
 
-def reconnect():
+def connect():
     global db
     global cur
-    # RECONNECT TO DB
     db = psp.connect(host=environ['host'], port=environ['port'],
                      database=environ['db'], user=environ['user'], password=environ['password'])
     cur = db.cursor()
+
+
+def disconnect():
+    db.close()
+    cur.close()
 
 
 def execute_query(query: str, fetch_n: int or None = None):
@@ -43,15 +47,14 @@ def execute_query(query: str, fetch_n: int or None = None):
         if `fetch_n` = (0 -> all | N -> N) => list[tuple]; 1 => tuple; None => _cursor
     """
     # Reconnect in case of disconnection from database
-    if cur.closed or db.closed:
-        print("reconnecting to database")
-        reconnect()
-        from time import sleep
-        sleep(5)
+    connect()
+    data = execute(query, fetch_n)
+    disconnect()
+    return data
 
-    # query
-    cur.execute(query)
 
+def execute(query: str, fetch_n: int or None = None):
+    data = cur.execute(query)
     if fetch_n == None:
         return cur
     if fetch_n == 0:
@@ -100,6 +103,7 @@ def station_id_check(id: int) -> bool:
 def getStationByID(id: int):
     station = execute_query(
         f'select * from station where id = {id}', fetch_n=1)
+
     if not station:
         return {}
     return station_tuple_to_json(station)
@@ -217,9 +221,10 @@ class StationDataAvgController(Resource):
             abort(406, "DATE/S INVALID")
 
         # Format the query with right values
+        connect()
         query: str = cur.mogrify(
             self.fetch_between_dates, (st_id, date_from, date_to))
-
+        disconnect()
         # All fetched records
         records: list[tuple] = execute_query(query, fetch_n=0)
 
@@ -260,7 +265,7 @@ class StationDataAvgController(Resource):
 # ----------------------------------------------------------------------------------------------
 
 
-class Stations (Resource):
+class AllStations (Resource):
     """HTTP Methods controller for station table requests
     - Return:
         - All avaiable stations
@@ -271,6 +276,21 @@ class Stations (Resource):
         return{
             "stations": [
                 station_tuple_to_json(i) for i in execute_query("select st.id,st.name,st.latitude,st.longitude from station as st", fetch_n=0)
+            ]
+        }, 200
+
+
+class WorkingStations(Resource):
+    """HTTP Methods controller for station table requests
+    - Return:
+        - All working stations
+    """
+
+    @token_required
+    def get(self):
+        return{
+            "stations": [
+                station_tuple_to_json(i) for i in execute_query("select distinct st.id,st.name,st.latitude,st.longitude from station_data_hourly_avg as sdha inner join station as st on sdha.station_id = st.id", fetch_n=0)
             ]
         }, 200
 # ----------------------------------------------------------------------------------------------

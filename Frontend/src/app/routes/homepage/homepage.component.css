@@ -1,13 +1,14 @@
-.select_custom {
+.homepage-container {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.select-custom {
     height: 3em;
     width: 30%;
     border-radius: 5px;
-}
-
-.select_container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
 }
 
 .btn_custom {
@@ -16,17 +17,72 @@
     height: 3em;
 }
 
-.chart-container {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+.select-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
 }
 
-.inactive {
-    opacity: 0;
-    transition: opacity 500ms ease-in-out;
+.datepicker-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.datepicker-item {
+    margin-top: 1em;
+    width: fit-content;
 }
 
 .active {
-    opacity: 1;
+    animation: fadeIn 1.5s;
+    -webkit-animation: fadeIn 1.5s;
+    -moz-animation: fadeIn 1.5s;
+    -o-animation: fadeIn 1.5s;
+    -ms-animation: fadeIn 1.5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
