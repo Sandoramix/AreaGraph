@@ -1,5 +1,5 @@
 import { StationHourlyAvg } from 'src/utils/StationHourlyAvg';
-import { ChangeDetectorRef, Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { Chart_custom } from 'src/utils/Chart-class';
 
@@ -11,8 +11,8 @@ import { Chart_custom } from 'src/utils/Chart-class';
 export class LinechartComponent implements OnInit {
 	private chart_class: Chart_custom = new Chart_custom();
 
-	station_values: string[] = ['T', 'RH', 'CO2', 'PM2.5', 'PM10'];
-	selected_sensor_type: string = '';
+	station_values: string[] = ['CO2', 'T', 'RH', 'PM2.5', 'PM10'];
+	selected_sensor_type: string;
 
 	private main_chart: any;
 	chart_options: EChartsOption;
@@ -25,16 +25,20 @@ export class LinechartComponent implements OnInit {
 		this.main_chart = null;
 		this.chart_options = this.chart_class.newLineChart();
 	}
-	ngOnChanges(change: SimpleChanges) {
-		if (change['data'].currentValue != this.data) {
-		}
-	}
 
 	chartInit(ev: any) {
 		this.main_chart = ev;
 	}
 
-	updateChart() {
+	updateHandler(datas?: StationHourlyAvg[]) {
+		if (datas) {
+			this.data = datas;
+			this.selected_sensor_type = '';
+		}
+		this.updateChart();
+	}
+
+	private updateChart() {
 		let tmp_values =
 			this.data == null
 				? []
@@ -44,7 +48,7 @@ export class LinechartComponent implements OnInit {
 
 		let x: string[] = [];
 		let y: number[] = [];
-		let sensor_unit: string = 'N/A';
+		let sensor_unit: string = '';
 
 		if (tmp_values.length > 0) {
 			sensor_unit = tmp_values[0].sensor.unit;
@@ -56,14 +60,15 @@ export class LinechartComponent implements OnInit {
 			});
 		}
 
-		this.main_chart.setOption(
-			{
-				...this.chart_class.mergedXAxis(x),
-				...this.chart_class.mergedSeriesData(y, sensor_unit),
-			},
-			{
-				notMerge: false,
-			},
-		);
+		if (this.main_chart) {
+			this.main_chart.setOption(
+				{
+					...this.chart_class.mergedSeriesData(x, y, sensor_unit),
+				},
+				{
+					notMerge: false,
+				},
+			);
+		}
 	}
 }
