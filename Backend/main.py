@@ -1,5 +1,5 @@
 
-from website import app, api, db, cur
+from website import app, api
 
 # http server module
 from gevent.pywsgi import WSGIServer
