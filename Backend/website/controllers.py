@@ -1,4 +1,5 @@
 # modules
+from website.queries import allStations, fetch_betweenDates, stationById, stationInfoById, workingStationIds, workingStations
 from functools import wraps
 import datetime
 from os import environ
@@ -14,7 +15,7 @@ import dotenv
 dotenv.load_dotenv()
 
 
-#
+# valid stations
 
 
 # CONNECT TO DB
@@ -95,14 +96,13 @@ def station_id_check(id: int) -> bool:
     Returns:
         `boolean` : `True` if exists, either `False`
     """
-    if not execute_query(f'select * from station where id = {id}', fetch_n=1):
+    if not execute_query(stationById(id), fetch_n=1):
         return False
     return True
 
 
 def getStationByID(id: int):
-    station = execute_query(
-        f'select * from station where id = {id}', fetch_n=1)
+    station = execute_query(stationById(id), fetch_n=1)
 
     if not station:
         return {}
@@ -151,29 +151,8 @@ class StationDataAvgController(Resource):
     parser.add_argument("date_to", type=str, help="No `date_to` parameter provided",
                         required=True, location='form', case_sensitive=False)
 
-    # query used for fetching the station by its `id` @[to contatenate]
-    fetch_station = "select st.id,st.name,st.latitude,st.longitude from station as st where id = "
-
-    # inner join between the needed tables/view
-    fetch_between_dates = """select sdha.bucket as created_on, 
-                        sdha.avg as average, 
-                        ss.id as sensor_id, 
-                        ss.sensor_type as sensor_type, 
-                        ss.min_range_val as sensor_min_val, 
-                        ss.max_range_val as sensor_max_val,
-                        ss.unit as sensor_unit,
-                        st.id as station_id,
-                        st.name as station_name,
-                        st.latitude as station_latitude,
-                        st.longitude as station_longitude from station_data_hourly_avg as sdha 
-                        inner join sensor as ss on sdha.sensor_id = ss.id 
-                        inner join station as st on sdha.station_id =st.id 
-                        where sdha.station_id =%s and sdha.bucket between %s and %s
-                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10')
-                        order by sdha.bucket, ss.name
-    """
-
     # POST Method
+
     @token_required
     def post(self):
         """POST Request
@@ -221,10 +200,8 @@ class StationDataAvgController(Resource):
             abort(406, "DATE/S INVALID")
 
         # Format the query with right values
-        connect()
-        query: str = cur.mogrify(
-            self.fetch_between_dates, (st_id, date_from, date_to))
-        disconnect()
+        query: str = fetch_betweenDates(st_id, date_from, date_to)
+
         # All fetched records
         records: list[tuple] = execute_query(query, fetch_n=0)
 
@@ -275,7 +252,7 @@ class AllStations (Resource):
     def get(self):
         return{
             "stations": [
-                station_tuple_to_json(i) for i in execute_query("select st.id,st.name,st.latitude,st.longitude from station as st", fetch_n=0)
+                station_tuple_to_json(i) for i in execute_query(allStations(), fetch_n=0)
             ]
         }, 200
 
@@ -288,9 +265,10 @@ class WorkingStations(Resource):
 
     @token_required
     def get(self):
+        g_st = workingStations(workingStationIds())
         return{
             "stations": [
-                station_tuple_to_json(i) for i in execute_query("select distinct st.id,st.name,st.latitude,st.longitude from station_data_hourly_avg as sdha inner join station as st on sdha.station_id = st.id", fetch_n=0)
+                station_tuple_to_json(i) for i in execute_query(g_st, 0)
             ]
         }, 200
 # ----------------------------------------------------------------------------------------------
