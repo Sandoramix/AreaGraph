@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 	referLinks: PageInformation[] = [
 		{ title: 'Home', link: '/home', value: 'Home' },
+		{ title: 'Map', link: '/map', value: 'Comincia' },
 		{ title: 'About', link: '/about', value: 'About us' },
 	];
 
