@@ -20,11 +20,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { FormsModule } from '@angular/forms';
 import { LinechartComponent } from './components/linechart/linechart.component';
+import { LookoutComponent } from './lookout/lookout.component';
 
 const matModules = [MatNativeDateModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MomentDateModule, MatSelectModule];
 
 @NgModule({
-	declarations: [AppComponent, HeaderComponent, routingComponents, LinechartComponent],
+	declarations: [AppComponent, HeaderComponent, routingComponents, LinechartComponent, LookoutComponent],
 	imports: [
 		matModules,
 		BrowserModule,
