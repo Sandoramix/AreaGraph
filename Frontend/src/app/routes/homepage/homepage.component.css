@@ -1,88 +1,35 @@
 .homepage-container {
-    height: calc(100vh - 80px);
+    /* height: calc(100vh - 71px); */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-}
-
-.select-custom {
-    height: 3em;
-    width: 30%;
-    border-radius: 5px;
-}
-
-.btn_custom {
-    display: flex;
     justify-content: center;
-    height: 3em;
 }
 
-.select-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
-}
-
-.datepicker-container {
+.btn-start {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin: 3em auto 0 auto;
+    height: 7em;
+    width: 15em;
 }
 
-.datepicker-item {
-    margin-top: 1em;
-    width: fit-content;
+.btn-start>button {
+    width: 15em;
+    border-radius: 25px;
+    font-size: large;
 }
 
-.active {
-    animation: fadeIn 1.5s;
-    -webkit-animation: fadeIn 1.5s;
-    -moz-animation: fadeIn 1.5s;
-    -o-animation: fadeIn 1.5s;
-    -ms-animation: fadeIn 1.5s;
+.nav-custom {
+    position: relative;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.logo {
+    margin-top: 5px;
+    height: 7.5em;
 }
 
-@-moz-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-o-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-ms-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.info-container>p {
+    max-width: 45ch;
+    margin: 0 auto 0 auto;
 }
