@@ -1,58 +1,12 @@
 <div class="homepage-container">
-
-
-    <div class="top-container">
-        <div class="select-container">
-            <select name="station_list" class="bg-secondary text-center
-                text-white select-custom border border-dark"
-                [(ngModel)]="selected_station" (change)="selectHandler()">
-                <option value="" selected>Select Station</option>
-                <option *ngFor="let item of stations" [value]="item.name">{{item.name}}</option>
-            </select>
-        </div>
-        <!--  -->
-        <div *ngIf="selected_station!==''">
-            <div class="datepicker-container">
-                <div class="datepicker-item">
-                    <mat-form-field appearance="fill" class="mr-3">
-                        <mat-label class="text-primary">Choose start date</mat-label>
-                        <input readonly matInput [matDatepicker]="startpicker"
-                            [value]="date_from.value" [max]="max_date"
-                            (dateInput)="date_fromInputHandler($event)"
-                            (dateChange)="date_fromInputHandler($event)">
-                        <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-                        <mat-datepicker #startpicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="datepicker-item">
-                    <mat-form-field appearance="fill">
-                        <mat-label class="text-primary">Choose end date</mat-label>
-                        <input readonly matInput [matDatepicker]="endpicker"
-                            [value]="date_to.value" [min]="date_from.value"
-                            [max]="max_date"
-                            (dateInput)="date_toInputHandler($event)"
-                            (dateChange)="date_toInputHandler($event)">
-                        <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-                        <mat-datepicker #endpicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-
-            </div>
-            <div class="btn_custom">
-                <button [disabled]="!validDates()" type="button" class="btn
-                    btn-primary text-center bg-info" style="width: 10em;"
-                    (click)="getStationHandler()">Search</button>
-            </div>
-        </div>
+    <div class="info-container text-center">
+        <img src="https://i.imgur.com/sr8kUGX.png" alt="AreaGraph" class="logo" title="AreaGraph" />
+        <h1 class="link text-dark" id="areagraph">AreaGraph</h1>
+        <p class="text-info text-center">
+            AreaGraph e' una piattaforma che mostra sotto forma di grafico, valori medi degli inquinanti dell'aria in un determinato periodo, scansionati con appositi sensori.
+        </p>
     </div>
-
-
-
-
-    <div style="width: 99%;" ngClass="{{sHourlyAvg!=null &&
-        sHourlyAvg.length>0
-        ?'active':'inactive'}}">
-        <app-linechart [data]="sHourlyAvg" [enabled]="sHourlyAvg!=null &&
-            sHourlyAvg.length>0"></app-linechart>
+    <div class="btn-start">
+        <button class="btn btn-secondary border-dark" [routerLink]="['/map']">Vai all'aplicazione</button>
     </div>
 </div>
