@@ -31,9 +31,6 @@ export class HttpRequestService {
 						headers: this.Headers(this.getToken()),
 					}),
 				),
-				catchError((err) => {
-					return EMPTY;
-				}),
 			);
 		}
 		return st_request;
@@ -52,9 +49,6 @@ export class HttpRequestService {
 						headers: this.Headers(this.getToken()),
 					}),
 				),
-				catchError((err) => {
-					return EMPTY;
-				}),
 			);
 		}
 		return st_request;
@@ -79,9 +73,6 @@ export class HttpRequestService {
 						headers: this.Headers(auth.token),
 					}),
 				),
-				catchError((err) => {
-					return EMPTY;
-				}),
 			);
 		}
 		return st_avg_request;
@@ -108,9 +99,6 @@ export class HttpRequestService {
 						obs.next(tk);
 						obs.complete;
 					});
-				}),
-				catchError((err) => {
-					return EMPTY;
 				}),
 			);
 	}
