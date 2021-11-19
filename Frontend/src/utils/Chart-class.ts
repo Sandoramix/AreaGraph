@@ -79,8 +79,12 @@ export class Chart_custom {
 		return {
 			xAxis: {
 				type: this.x_type,
-				boundaryGap: false,
+				boundaryGap: ['10%', '10%'],
 				data: x,
+
+				axisLine: {
+					show: true,
+				},
 			},
 		};
 	}
@@ -94,7 +98,12 @@ export class Chart_custom {
 					fontWeight: 'bold',
 					align: 'right',
 				},
-				boundaryGap: [0, '100%'],
+
+				boundaryGap: ['0%', '100%'],
+				max: (val) => {
+					return unit === '%' ? 100 : Math.round(val.max);
+				},
+				maxInterval: 50,
 			},
 		};
 	}
