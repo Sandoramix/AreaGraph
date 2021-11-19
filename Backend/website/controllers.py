@@ -265,7 +265,7 @@ class WorkingStations(Resource):
 
     @token_required
     def get(self):
-        g_st = workingStations(workingStationIds())
+        g_st = workingStations()
         return{
             "stations": [
                 station_tuple_to_json(i) for i in execute_query(g_st, 0)

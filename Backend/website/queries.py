@@ -14,7 +14,7 @@ def workingStationIdsQuery() -> str:
 
 
 def workingStationIds() -> list[int]:
-    return [str(i) for i in [
+    return ','.join([str(i) for i in [
         34,
         49,
         51,
@@ -43,12 +43,11 @@ def workingStationIds() -> list[int]:
         31499869,
         31501097,
         31515046
-    ]]
+    ]])
 
 
-def workingStations(good_ids: list) -> str:
-    formatted = ",".join(good_ids)
-    return f"select st.id,st.name,st.latitude,st.longitude from station as st where id in ({formatted})"
+def workingStations() -> str:
+    return f"select st.id,st.name,st.latitude,st.longitude from station as st where id in ({workingStationIds()})"
 
 
 def stationById(id: int) -> str:
@@ -76,6 +75,6 @@ def fetch_betweenDates(st_id: int, dt_from: str, dt_to: str) -> str:
                         inner join sensor as ss on sdha.sensor_id = ss.id 
                         inner join station as st on sdha.station_id =st.id 
                         where sdha.station_id ={st_id} and sdha.bucket between '{dt_from}' and '{dt_to}'
-                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10')
+                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10') and st.id in ({workingStationIds()})
                         order by sdha.bucket, ss.name
     """
