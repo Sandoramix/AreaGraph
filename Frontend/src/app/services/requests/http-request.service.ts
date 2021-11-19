@@ -1,4 +1,4 @@
-import { env } from 'src/environments/environment.dev';
+import { environment } from 'src/environments/environment.dev';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -21,13 +21,13 @@ export class HttpRequestService {
 	getAllStations() {
 		let st_request: Observable<Object>;
 		if (this.checkCookie()) {
-			st_request = this.http.get(`${env.apiUrl}all_stations`, {
+			st_request = this.http.get(`${environment.apiUrl}all_stations`, {
 				headers: this.Headers(this.getToken()),
 			});
 		} else {
 			st_request = this.getAuth().pipe(
 				switchMap((tk) =>
-					this.http.get(`${env.apiUrl}all_stations`, {
+					this.http.get(`${environment.apiUrl}all_stations`, {
 						headers: this.Headers(this.getToken()),
 					}),
 				),
@@ -39,13 +39,13 @@ export class HttpRequestService {
 	getWorkingStations() {
 		let st_request: Observable<Object>;
 		if (this.checkCookie()) {
-			st_request = this.http.get(`${env.apiUrl}working_stations`, {
+			st_request = this.http.get(`${environment.apiUrl}working_stations`, {
 				headers: this.Headers(this.getToken()),
 			});
 		} else {
 			st_request = this.getAuth().pipe(
 				switchMap((tk) =>
-					this.http.get(`${env.apiUrl}working_stations`, {
+					this.http.get(`${environment.apiUrl}working_stations`, {
 						headers: this.Headers(this.getToken()),
 					}),
 				),
@@ -63,13 +63,13 @@ export class HttpRequestService {
 		let st_avg_request;
 
 		if (this.checkCookie()) {
-			st_avg_request = this.http.post<StationAvg>(`${env.apiUrl}station_avg`, body, {
+			st_avg_request = this.http.post<StationAvg>(`${environment.apiUrl}station_avg`, body, {
 				headers: this.Headers(this.getToken()),
 			});
 		} else {
 			st_avg_request = this.getAuth().pipe(
 				switchMap((auth) =>
-					this.http.post<StationAvg>(`${env.apiUrl}station_avg`, body, {
+					this.http.post<StationAvg>(`${environment.apiUrl}station_avg`, body, {
 						headers: this.Headers(auth.token),
 					}),
 				),
@@ -87,9 +87,9 @@ export class HttpRequestService {
 
 	private getAuth(): Observable<Auth> {
 		return this.http
-			.get<Auth>(`${env.apiUrl}auth`, {
+			.get<Auth>(`${environment.apiUrl}auth`, {
 				headers: new HttpHeaders({
-					Authorization: `Basic ${btoa(`${env.user}:${env.passw}`)}`,
+					Authorization: `Basic ${btoa(`${environment.user}:${environment.passw}`)}`,
 				}),
 			})
 			.pipe(

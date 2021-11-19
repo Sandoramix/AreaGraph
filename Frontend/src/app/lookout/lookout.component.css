@@ -27,18 +27,14 @@
 .datepicker-container {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
 }
 
-.datepicker-item {
+mat-form-field {
     margin: 1em 0 0 0;
     min-width: fit-content;
     min-width: 20%;
     max-width: 15rem;
 }
-
-.datepicker-item>mat-form-field {}
 
 .active {
     animation: fadeIn 1.5s;
