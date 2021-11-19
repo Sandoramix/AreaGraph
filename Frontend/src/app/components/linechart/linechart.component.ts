@@ -11,14 +11,27 @@ import { Chart_custom } from 'src/utils/Chart-class';
 export class LinechartComponent implements OnInit {
 	private chart_class: Chart_custom = new Chart_custom();
 
-	station_values: string[] = ['CO2', 'T', 'RH', 'PM2.5', 'PM10'];
-	private station_help_info: string[] = [
-		'L’anidride carbonica (CO2) è tra i gas ad effetto serra (Greenhouse gas o GHG) che maggiormente contribuiscono al riscaldamento del pianeta.\nTali gas presenti nell’atmosfera terrestre catturano il calore del sole impedendogli di ritornare nello spazio. ',
-		'T help',
-		'RH help',
-		'PM2.5 help',
-		'PM10 help',
+	sensor_values: string[] = ['CO2', 'T', 'RH', 'PM2.5', 'PM10'];
+	private sensor_help_info: string[] = [
+		`<b>L’anidride carbonica</b> (CO2) è un gas inodore ed incolore, ed è tra i gas ad effetto serra che maggiormente contribuiscono al riscaldamento del pianeta.
+		Tali gas presenti nell’atmosfera terrestre catturano il calore del sole impedendogli di ritornare nello spazio.
+		L'incremento globale della concentrazione di CO2 è dovuto all'<b>uso di combustibili fossili</b> e ai <b>cambiamenti nell'utilizzo dei suoli</b>.`,
+
+		`Temperatura media`,
+
+		`<b>Umidita' relativa</b> (RH) è il rapporto tra l'umidità assoluta attuale e l'umidità assoluta massima possibile <em>(che dipende dalla temperatura dell'aria attuale)</em>. 
+		Una lettura del 100% di umidità relativa significa che l'aria è totalmente satura di vapore acqueo e non può più trattenere, creando la possibilità di pioggia. 
+		Ciò <b>non significa</b> che l'umidità relativa debba essere del 100% affinché possa piovere: <b>deve essere del 100% nel punto in cui si stanno formando le nuvole</b>, ma l'umidità relativa vicino al suolo potrebbe essere molto inferiore `,
+
+		`Le polveri fini, denominate <b>PM2.5</b> (diametro inferiore a 2.5 µm), 
+		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.
+		Le sorgenti possono essere di tipo <b>organica</b> o <b>inorganica</b>`,
+
+		`Le polveri fini, denominate <b>PM10</b> (diametro inferiore a 10 µm), 
+		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.
+		Le sorgenti possono essere di tipo <b>organica</b> o <b>inorganica</b>`,
 	];
+	sensor_info: string;
 	selected_sensor_type: string;
 
 	private main_chart: any;
@@ -42,10 +55,6 @@ export class LinechartComponent implements OnInit {
 		});
 	}
 
-	resolveHelpLabel() {
-		return this.station_help_info[this.selected_sensor_type != '' ? this.station_values.indexOf(this.selected_sensor_type) : 0];
-	}
-
 	ngOnInit(): void {
 		this.main_chart = null;
 		this.chart_options = this.chart_class.newLineChart();
@@ -61,6 +70,8 @@ export class LinechartComponent implements OnInit {
 			this.selected_sensor_type = '';
 		}
 
+		let index = this.sensor_values.indexOf(this.selected_sensor_type);
+		this.sensor_info = index == -1 ? '' : this.sensor_help_info[index];
 		this.updateChart();
 	}
 
@@ -85,13 +96,17 @@ export class LinechartComponent implements OnInit {
 				return h.avg_value;
 			});
 			y = tmp_values.map((h) => {
-				return this.selected_sensor_type != 'RH' && this.selected_sensor_type != 'T'
-					? h.avg_value
-					: this.selected_sensor_type == 'T'
-					? h.avg_value / 10
-					: h.avg_value / 10 >= 0 && h.avg_value / 10 <= 100
-					? h.avg_value / 10
-					: h.avg_value / 100;
+				let avg = h.avg_value;
+				if (this.selected_sensor_type != 'RH' && this.selected_sensor_type != 'T') {
+					return avg;
+				}
+				if (this.selected_sensor_type == 'T') {
+					avg = avg < 60 ? avg : avg >= 600 ? avg / 100 : avg / 10;
+					console.log(avg);
+
+					return avg;
+				}
+				return avg / 10 >= 0 && avg / 10 <= 100 ? avg : avg <= 1000 ? avg / 10 : avg / 100;
 			});
 		}
 

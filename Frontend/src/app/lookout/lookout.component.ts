@@ -1,4 +1,5 @@
-import { LinechartComponent } from './../components/linechart/linechart.component';
+import { MapComponent } from './../components/map/map.component';
+import { LinechartComponent } from '../components/linechart/linechart.component';
 import { EChartsOption } from 'echarts';
 import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
@@ -50,26 +51,14 @@ export class LookoutComponent implements OnInit {
 	sHourlyAvg: StationHourlyAvg[] | null = null;
 
 	@ViewChild(LinechartComponent) linechart: LinechartComponent;
+	@ViewChild(MapComponent) map: MapComponent;
 
 	constructor(public req: HttpRequestService, public title: TitleManagementService, private cd: ChangeDetectorRef) {
 		title.setSubTitle('Home');
-
-		// req.getAllStations().subscribe({
-		// 	next: (res: any) => {
-		// 		this.stations = res.stations;
-		// 		this.stations = this.stations.filter((ss) => {
-		// 			return environment.valid_stations.includes(ss.id);
-		// 		});
-		// 	},
-		// 	error: (err) => {
-		// 		alert('Connection error... Try again later.');
-		// 		//location.reload();
-		// 	},
-		// });
-
 		req.getWorkingStations().subscribe({
 			next: (res: any) => {
 				this.stations = res.stations;
+				this.map.addMarkers(this.stations);
 			},
 			error: (err) => {
 				alert('Connection error... Try again later.');
@@ -78,7 +67,9 @@ export class LookoutComponent implements OnInit {
 		});
 	}
 	//
-
+	stationSelectHandler(ev: string) {
+		this.selected_station = ev;
+	}
 	ngOnInit() {
 		//this.getStationAvg(27411741, '2021-11-01 00:00:00.00', '2021-11-10 23:00:00.00');
 	}
@@ -89,7 +80,7 @@ export class LookoutComponent implements OnInit {
 		})[0].id;
 		let d_from = `${this._date_from} 00:00:00.00`;
 		let d_to = `${this._date_to} 23:00:00.00`;
-		console.log(`${id}\n${d_from}\n${d_to}`);
+		//console.log(`${id}\n${d_from}\n${d_to}`);
 		this.getStationAvg(id, d_from, d_to);
 	}
 

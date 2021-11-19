@@ -6,7 +6,7 @@
     transition: transform 350ms ease-in-out;
 }
 
-.chart-select-type:focus {
+.chart-select-type:hover {
     transform: translateY(-5px);
 }
 
@@ -72,9 +72,9 @@
     position: absolute;
     background-color: #f1f1f1;
     min-height: 50px;
-    min-width: 200px;
+    min-width: 50ch;
     padding: 5px;
-    overflow: auto;
+    white-space: pre-line;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 1em;

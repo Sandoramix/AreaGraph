@@ -1,3 +1,4 @@
+import { MapComponent } from './components/map/map.component';
 import { LookoutComponent } from './lookout/lookout.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';

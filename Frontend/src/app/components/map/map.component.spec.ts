@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LinechartComponent } from './linechart.component';
+import { MapComponent } from './map.component';
 
-describe('LinechartComponent', () => {
-	let component: LinechartComponent;
-	let fixture: ComponentFixture<LinechartComponent>;
+describe('MapComponent', () => {
+	let component: MapComponent;
+	let fixture: ComponentFixture<MapComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [LinechartComponent],
+			declarations: [MapComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(LinechartComponent);
+		fixture = TestBed.createComponent(MapComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
