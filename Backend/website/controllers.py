@@ -3,7 +3,7 @@ from website.queries import allStations, fetch_betweenDates, stationById, statio
 from functools import wraps
 import datetime
 from os import environ
-import os
+from sys import platform
 from flask.helpers import make_response
 from flask_restful import Resource, reqparse
 import psycopg2 as psp
@@ -13,8 +13,6 @@ from flask import abort, request, jsonify
 # Virual enviroment [.env] configuration
 import dotenv
 dotenv.load_dotenv()
-
-
 # valid stations
 
 
