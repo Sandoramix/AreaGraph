@@ -1,9 +1,9 @@
 import { environment } from 'src/environments/environment.dev';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { StationAvg } from 'src/utils/StationAvg';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 interface Auth {
 	token: string;
@@ -12,11 +12,7 @@ interface Auth {
 
 @Injectable()
 export class HttpRequestService {
-	constructor(private http: HttpClient) {
-		// this.getStationAvg(107, '2021-11-09 09:00:00', '2021-11-09 10:00:00.00').subscribe((x) => {
-		// 	console.warn(x);
-		// });
-	}
+	constructor(private http: HttpClient) {}
 
 	getAllStations() {
 		let st_request: Observable<Object>;
