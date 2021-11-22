@@ -4,7 +4,13 @@ import { LinechartComponent } from '../../components/linechart/linechart.compone
 import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
-import { ChangeDetectorRef, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	OnChanges,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FormControl } from '@angular/forms';
 
@@ -42,14 +48,24 @@ export class LookoutComponent implements OnInit {
 
 	stations: Station[] = [];
 
-	headers: string[] = ['Created on', 'Average', 'Unit', 'Sensor id', 'Sensor type'];
+	headers: string[] = [
+		'Created on',
+		'Average',
+		'Unit',
+		'Sensor id',
+		'Sensor type',
+	];
 	stationAvg: StationAvg;
 	sHourlyAvg: StationHourlyAvg[] | null = null;
 
 	@ViewChild(LinechartComponent) linechart: LinechartComponent;
 	@ViewChild(MapComponent) map: MapComponent;
 
-	constructor(public req: HttpRequestService, public title: TitleManagementService, private cd: ChangeDetectorRef) {
+	constructor(
+		public req: HttpRequestService,
+		public title: TitleManagementService,
+		private cd: ChangeDetectorRef
+	) {
 		title.setSubTitle('Home');
 		req.getWorkingStations().subscribe({
 			next: (res: any) => {
@@ -83,7 +99,9 @@ export class LookoutComponent implements OnInit {
 				this.stationAvg = stAvg;
 				let tmpAvg = stAvg.data_hourly_avg;
 				if (tmpAvg == null || tmpAvg.length == 0) {
-					alert("This station doesn't have any records in this date range");
+					alert(
+						"This station doesn't have any records in this date range"
+					);
 					return;
 				}
 
@@ -93,6 +111,10 @@ export class LookoutComponent implements OnInit {
 				this.date_from.setValue('');
 				this.date_to.setValue('');
 				this.linechart.updateHandler(this.sHourlyAvg);
+				setTimeout(() => {
+					let chart = document.getElementById('chart');
+					if (chart) chart.scrollIntoView();
+				}, 2000);
 			},
 			error: (err) => {
 				alert('Internal server error. Try again later');
