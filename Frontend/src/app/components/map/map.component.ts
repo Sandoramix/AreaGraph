@@ -52,6 +52,7 @@ export class MapComponent implements AfterViewInit {
 			maxZoom: 18,
 			attribution:
 				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			minZoom: 3,
 		}).addTo(this.map);
 	}
 
