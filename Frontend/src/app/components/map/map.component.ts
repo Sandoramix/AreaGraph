@@ -1,6 +1,6 @@
 import { Station } from './../../../utils/Station';
-import { AfterViewInit, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Map, Marker, marker, tileLayer, Icon, LayerGroup, FeatureGroup, featureGroup, latLngBounds, Point } from 'leaflet';
+import { AfterViewInit, Component, Input, Output, EventEmitter } from '@angular/core';
+import { Map, Marker, marker, tileLayer, Icon, LayerGroup, featureGroup, Point } from 'leaflet';
 
 @Component({
 	selector: 'app-map',
@@ -12,17 +12,17 @@ export class MapComponent implements AfterViewInit {
 
 	@Output() onStationSelect: EventEmitter<string> = new EventEmitter();
 
-	all_markers: Marker[] = [];
+	private all_markers: Marker[] = [];
 	private map: Map;
 	private layerGroup: LayerGroup;
-	//https://i.imgur.com/Bd5rfGv.png
 
-	red = '../../../assets/map-icon-red.png';
-	blue = '../../../assets/map-icon-blue.png';
-	red_icon = new Icon({
+	private red = '../../../assets/map-icon-red.png';
+	private blue = '../../../assets/map-icon-blue.png';
+
+	private red_icon: Icon = new Icon({
 		iconUrl: this.red,
 	});
-	blue_icon = new Icon({
+	private blue_icon: Icon = new Icon({
 		iconUrl: this.blue,
 	});
 
@@ -31,13 +31,9 @@ export class MapComponent implements AfterViewInit {
 		this.layerGroup = new LayerGroup().addTo(this.map);
 
 		tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 20,
+			maxZoom: 18,
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		}).addTo(this.map);
-
-		// const markerItem = marker([51.5, -0.09]).addTo(map);
-
-		// map.fitBounds([[markerItem.getLatLng().lat, markerItem.getLatLng().lng]]);
 	}
 
 	addMarkers(st: Station[]) {
@@ -49,11 +45,11 @@ export class MapComponent implements AfterViewInit {
 		st.forEach((station: Station) => {
 			this.setMarker(station.latitude, station.longitude, station.name, this.blue_icon);
 		});
+
 		var group = featureGroup(this.all_markers).addTo(this.map);
 		this.map.fitBounds(group.getBounds(), {
 			padding: new Point(0, 30),
 		});
-		//this.map.fitBounds();
 	}
 
 	private setMarker(lat: number, lng: number, title: string, icon: Icon) {

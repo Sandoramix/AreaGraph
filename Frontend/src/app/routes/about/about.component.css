@@ -1,0 +1,22 @@
+.card-body>h2 {
+    font-size: 2.5em;
+}
+
+.card-custom {
+    display: flex;
+    justify-content: space-between;
+    min-height: calc(100vh - 72px) !important;
+}
+
+.ch-main {
+    margin-bottom: 0;
+}
+
+.ch-sub {
+    margin-top: 0;
+}
+
+div-center {
+    display: flex;
+    justify-content: center;
+}
