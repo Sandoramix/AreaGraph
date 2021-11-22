@@ -1,5 +1,5 @@
-.card-body>h2 {
-    font-size: 2.5em;
+h2 {
+    font-size: 3ch;
 }
 
 .card-custom {
@@ -10,13 +10,20 @@
 
 .ch-main {
     margin-bottom: 0;
+    font-size: 4ch;
 }
 
 .ch-sub {
     margin-top: 0;
+    font-size: 2ch;
 }
 
-div-center {
+.div-center {
     display: flex;
     justify-content: center;
+}
+
+.card-body {
+    margin-top: calc(25vh - 72px - 5em);
+    vertical-align: middle;
 }

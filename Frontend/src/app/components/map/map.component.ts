@@ -13,6 +13,7 @@ export class MapComponent implements AfterViewInit {
 	@Output() onStationSelect: EventEmitter<string> = new EventEmitter();
 
 	private all_markers: Marker[] = [];
+
 	private map: Map;
 	private layerGroup: LayerGroup;
 
@@ -21,13 +22,15 @@ export class MapComponent implements AfterViewInit {
 
 	private red_icon: Icon = new Icon({
 		iconUrl: this.red,
+		className: 'active',
 	});
 	private blue_icon: Icon = new Icon({
 		iconUrl: this.blue,
+		className: 'inactive',
 	});
 
 	ngAfterViewInit(): void {
-		this.map = new Map('map').setView([42.975542, 12.46655], 6);
+		this.map = new Map('map').setView([41.940685, 12.485678], 7);
 		this.layerGroup = new LayerGroup().addTo(this.map);
 
 		tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -48,7 +51,7 @@ export class MapComponent implements AfterViewInit {
 
 		var group = featureGroup(this.all_markers).addTo(this.map);
 		this.map.fitBounds(group.getBounds(), {
-			padding: new Point(0, 30),
+			padding: new Point(0, 25),
 		});
 	}
 
@@ -60,33 +63,20 @@ export class MapComponent implements AfterViewInit {
 			.bindPopup(title)
 			.addTo(this.layerGroup)
 			.on('click', (st) => {
-				let selected_station = st.target._popup._content;
-
-				let new_markers: _Marker[] = [];
-
+				let is_active;
 				let title = st.target.options.title;
-
-				this.all_markers.forEach((m) => {
-					new_markers.push({
-						name: m.options.title ? m.options.title : '',
-						lat: m.getLatLng().lat,
-						lng: m.getLatLng().lng,
-						isActive: m.options.title === title,
-					});
+				this.all_markers.forEach((x) => {
+					let x_active = x.getIcon().options.className == 'active' ? true : false;
+					if (x.options.title === title) {
+						is_active = x_active;
+						x.setIcon(is_active ? this.blue_icon : this.red_icon);
+					} else {
+						x.setIcon(this.blue_icon);
+					}
 				});
-
-				this.updateHandler(new_markers);
-				this.onStationSelect.emit(selected_station);
+				this.onStationSelect.emit(!is_active ? title : undefined);
 			});
 		this.all_markers.push(_marker);
-	}
-
-	private updateHandler(mkrs: _Marker[]) {
-		this.layerGroup.clearLayers();
-		this.all_markers = [];
-		mkrs.forEach((m: _Marker) => {
-			this.setMarker(m.lat, m.lng, m.name, m.isActive ? this.red_icon : this.blue_icon);
-		});
 	}
 }
 

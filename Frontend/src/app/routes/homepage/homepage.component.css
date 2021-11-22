@@ -5,11 +5,15 @@
     justify-content: center;
 }
 
+.hr-c {
+    width: 90%;
+}
+
 .btn-start {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 3em auto 0 auto;
+    margin: 0 auto 0 auto;
     height: 7em;
     width: 15em;
 }
@@ -30,6 +34,7 @@
 }
 
 .info-container>p {
+    font-size: 2ch;
     max-width: 45ch;
-    margin: 0 auto 0 auto;
+    margin: 0 auto 3em auto;
 }

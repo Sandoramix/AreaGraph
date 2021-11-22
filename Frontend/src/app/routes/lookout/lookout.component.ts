@@ -62,8 +62,8 @@ export class LookoutComponent implements OnInit {
 		});
 	}
 	//
-	stationSelectHandler(ev: string) {
-		this.selected_station = ev;
+	stationSelectHandler(ev?: string) {
+		this.selected_station = ev ? ev : '';
 	}
 	ngOnInit() {}
 
