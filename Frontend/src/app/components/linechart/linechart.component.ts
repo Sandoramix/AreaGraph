@@ -21,7 +21,7 @@ export class LinechartComponent implements OnInit {
 
 		`<b>Umidita' relativa</b> (RH) è il rapporto tra l'umidità assoluta attuale e l'umidità assoluta massima possibile <em>(che dipende dalla temperatura dell'aria attuale)</em>. 
 		Con 100% di umidità relativa si crea crea la possibilità di pioggia.
-		P.s. <b>deve essere del 100% nel punto in cui si stanno formando le nuvole</b>, ma l'umidità relativa vicino al suolo potrebbe essere molto inferiore `,
+		P.s. <b>per poter piovere, deve essere 100% nel punto in cui si stanno formando le nuvole</b>, ma l'umidità relativa vicino al suolo potrebbe essere molto inferiore `,
 
 		`Le polveri fini, denominate <b>PM2.5</b> (diametro inferiore a 2.5 µm), 
 		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.
@@ -49,7 +49,11 @@ export class LinechartComponent implements OnInit {
 
 			let _class: string = info.classList[0];
 
-			if (_class !== 'info-content' && _class !== 'info-icon' && _id !== 'info-content-shape') {
+			if (
+				_class !== 'info-content' &&
+				_class !== 'info-icon' &&
+				_id !== 'info-content-shape'
+			) {
 				this.infoDropdownRemove();
 			}
 		});
@@ -97,7 +101,10 @@ export class LinechartComponent implements OnInit {
 			});
 			y = tmp_values.map((h) => {
 				let avg = h.avg_value;
-				if (this.selected_sensor_type != 'RH' && this.selected_sensor_type != 'T') {
+				if (
+					this.selected_sensor_type != 'RH' &&
+					this.selected_sensor_type != 'T'
+				) {
 					return avg;
 				}
 				if (this.selected_sensor_type == 'T') {
@@ -106,7 +113,11 @@ export class LinechartComponent implements OnInit {
 
 					return avg;
 				}
-				return avg >= 0 && avg <= 100 ? avg : avg <= 1000 ? avg / 10 : avg / 100;
+				return avg >= 0 && avg <= 100
+					? avg
+					: avg <= 1000
+					? avg / 10
+					: avg / 100;
 			});
 		}
 
@@ -117,27 +128,35 @@ export class LinechartComponent implements OnInit {
 				},
 				{
 					notMerge: false,
-				},
+				}
 			);
 		}
 	}
 
 	infoDropdownToggle() {
-		let info_dropdown = document ? document.getElementById('info-content-dropdown') : null;
+		let info_dropdown = document
+			? document.getElementById('info-content-dropdown')
+			: null;
 		if (!info_dropdown) return;
 		info_dropdown.classList.toggle('show');
 
-		let info_dropdown_shape = document ? document.getElementById('info-content-shape') : null;
+		let info_dropdown_shape = document
+			? document.getElementById('info-content-shape')
+			: null;
 		if (!info_dropdown_shape) return;
 		info_dropdown_shape.classList.toggle('visible');
 	}
 
 	private infoDropdownRemove() {
-		let info_dropdown = document ? document.getElementById('info-content-dropdown') : null;
+		let info_dropdown = document
+			? document.getElementById('info-content-dropdown')
+			: null;
 		if (!info_dropdown) return;
 		info_dropdown.classList.remove('show');
 
-		let info_dropdown_shape = document ? document.getElementById('info-content-shape') : null;
+		let info_dropdown_shape = document
+			? document.getElementById('info-content-shape')
+			: null;
 		if (!info_dropdown_shape) return;
 		info_dropdown_shape.classList.remove('visible');
 	}

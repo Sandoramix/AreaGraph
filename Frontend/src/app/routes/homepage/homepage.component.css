@@ -1,11 +1,12 @@
 .homepage-container {
-    /* height: calc(100vh - 71px); */
+    /* height: calc(100vh - 72px); */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center
 }
 
 .hr-c {
+    margin-top: 1rem;
     width: 90%;
 }
 
@@ -36,5 +37,18 @@
 .info-container>p {
     font-size: 2ch;
     max-width: 45ch;
-    margin: 0 auto 3em auto;
+    margin: 0 auto 0 auto;
+}
+
+.holder {
+    position: relative;
+    width: 100vw;
+    height: 50px;
+}
+
+.c {
+    min-height: calc(100vh - 72px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

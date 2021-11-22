@@ -6,6 +6,8 @@ h2 {
     display: flex;
     justify-content: space-between;
     min-height: calc(100vh - 72px) !important;
+    background-color: rgb(205, 213, 247);
+    border: 0;
 }
 
 .ch-main {
@@ -26,4 +28,20 @@ h2 {
 .card-body {
     margin-top: calc(25vh - 72px - 5em);
     vertical-align: middle;
+    border-radius: 50px !important;
+}
+
+.card-header {
+    margin: 0 0 auto 0;
+}
+
+.card-body-item {
+    margin: 0 auto 0 auto;
+    width: 40vw;
+    min-width: 250px;
+    overflow: hidden;
+}
+
+hr {
+    background-color: rgba(0, 0, 255, 0.158);
 }

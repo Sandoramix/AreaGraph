@@ -3,7 +3,11 @@ import { EChartsOption } from 'echarts';
 export class Chart_custom {
 	private x_type: 'category' | 'log' | 'time' | 'value' = 'category';
 
-	newLineChart(x_vals?: string[], y_vals?: number[], unit: string = ''): EChartsOption {
+	newLineChart(
+		x_vals?: string[],
+		y_vals?: number[],
+		unit: string = ''
+	): EChartsOption {
 		return {
 			...this.xAxisPart(x_vals ? x_vals : []),
 
@@ -50,7 +54,12 @@ export class Chart_custom {
 				showDelay: 0,
 				transitionDuration: 0.2,
 				position: function (pos, params, dom, rect, size) {
-					return [size.viewSize[0] - pos[0] > size.viewSize[0] * 0.4 ? pos[0] : '60%', '10%'];
+					return [
+						size.viewSize[0] - pos[0] > size.viewSize[0] * 0.4
+							? pos[0]
+							: '60%',
+						'10%',
+					];
 				},
 				formatter: function (params: any) {
 					let data = params[0];

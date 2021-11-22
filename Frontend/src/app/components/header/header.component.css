@@ -4,6 +4,11 @@
 
 .nav-custom {
     width: 100%;
+    height: 72px;
+}
+
+#navbarNav {
+    z-index: 1;
 }
 
 #areagraph {

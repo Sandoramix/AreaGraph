@@ -9,8 +9,6 @@ export class TitleManagementService {
 		this.mainTitle = titleSevice.getTitle();
 	}
 
-
-
 	setMainTitle(title: string): void {
 		this.mainTitle = title;
 		this.titleSevice.setTitle(title);
@@ -25,7 +23,7 @@ export class TitleManagementService {
 	}
 	getSubTitle(): string {
 		let pageTitle: string = this.getPageTitle();
-		return pageTitle.includes("-") ? pageTitle.split(" - ")[1] : ''
+		return pageTitle.includes('-') ? pageTitle.split(' - ')[1] : '';
 	}
 	getPageTitle(): string {
 		return this.titleSevice.getTitle();
