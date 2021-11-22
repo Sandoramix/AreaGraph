@@ -1,6 +1,6 @@
-import { MapComponent } from './../components/map/map.component';
-import { LinechartComponent } from '../components/linechart/linechart.component';
-import { EChartsOption } from 'echarts';
+import { MapComponent } from '../../components/map/map.component';
+import { LinechartComponent } from '../../components/linechart/linechart.component';
+
 import { HttpRequestService } from 'src/app/services/requests/http-request.service';
 import { TitleManagementService } from 'src/app/services/title/title-management.service';
 
@@ -13,10 +13,6 @@ import * as _moment from 'moment';
 import { StationAvg } from 'src/utils/StationAvg';
 import { Station } from 'src/utils/Station';
 import { StationHourlyAvg } from 'src/utils/StationHourlyAvg';
-
-import { environment } from 'src/environments/environment.prod';
-
-const moment = _moment;
 
 export const MY_FORMATS = {
 	parse: {
@@ -62,17 +58,14 @@ export class LookoutComponent implements OnInit {
 			},
 			error: (err) => {
 				alert('Connection error... Try again later.');
-				//location.reload();
 			},
 		});
 	}
 	//
-	stationSelectHandler(ev: string) {
-		this.selected_station = ev;
+	stationSelectHandler(ev?: string) {
+		this.selected_station = ev ? ev : '';
 	}
-	ngOnInit() {
-		//this.getStationAvg(27411741, '2021-11-01 00:00:00.00', '2021-11-10 23:00:00.00');
-	}
+	ngOnInit() {}
 
 	getStationHandler() {
 		let id = this.stations.filter((station) => {
@@ -80,7 +73,7 @@ export class LookoutComponent implements OnInit {
 		})[0].id;
 		let d_from = `${this._date_from} 00:00:00.00`;
 		let d_to = `${this._date_to} 23:00:00.00`;
-		//console.log(`${id}\n${d_from}\n${d_to}`);
+
 		this.getStationAvg(id, d_from, d_to);
 	}
 

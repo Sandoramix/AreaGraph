@@ -20,8 +20,8 @@ export class LinechartComponent implements OnInit {
 		`Temperatura media`,
 
 		`<b>Umidita' relativa</b> (RH) è il rapporto tra l'umidità assoluta attuale e l'umidità assoluta massima possibile <em>(che dipende dalla temperatura dell'aria attuale)</em>. 
-		Una lettura del 100% di umidità relativa significa che l'aria è totalmente satura di vapore acqueo e non può più trattenere, creando la possibilità di pioggia. `,
-		//Ciò <b>non significa</b> che l'umidità relativa debba essere del 100% affinché possa piovere: <b>deve essere del 100% nel punto in cui si stanno formando le nuvole</b>, ma l'umidità relativa vicino al suolo potrebbe essere molto inferiore `,
+		Con 100% di umidità relativa si crea crea la possibilità di pioggia.
+		P.s. <b>deve essere del 100% nel punto in cui si stanno formando le nuvole</b>, ma l'umidità relativa vicino al suolo potrebbe essere molto inferiore `,
 
 		`Le polveri fini, denominate <b>PM2.5</b> (diametro inferiore a 2.5 µm), 
 		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.

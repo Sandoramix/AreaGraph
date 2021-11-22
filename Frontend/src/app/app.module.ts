@@ -20,7 +20,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { FormsModule } from '@angular/forms';
 import { LinechartComponent } from './components/linechart/linechart.component';
-import { LookoutComponent } from './lookout/lookout.component';
+import { LookoutComponent } from './routes/lookout/lookout.component';
 import { MapComponent } from './components/map/map.component';
 
 const matModules = [MatNativeDateModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MomentDateModule, MatSelectModule];

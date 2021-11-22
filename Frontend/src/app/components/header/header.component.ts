@@ -13,15 +13,6 @@ export class HeaderComponent implements OnInit {
 		{ title: 'About', link: '/about', value: 'About us' },
 	];
 
-	getReferByTitle(t: string): PageInformation {
-		let tmp = this.referLinks.filter((obj: PageInformation) => {
-			return obj.title.toLowerCase() === t.toLowerCase();
-		});
-		console.log(tmp);
-
-		return tmp[0];
-	}
-
 	getReferLinks(): PageInformation[] {
 		return this.referLinks;
 	}
