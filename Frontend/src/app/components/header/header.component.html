@@ -16,7 +16,9 @@
         <hr class="hr-custom" />
         <ul class="navbar-nav">
             <li *ngFor="let tmp of getReferLinks()">
-                <a class="nav-link" [routerLink]="tmp.link" routerLinkActive="active-dir" (click)="titleService.setSubTitle(tmp.title)">{{ tmp.value }} </a>
+                <a class="nav-link" [routerLink]="tmp.link" routerLinkActive="active-dir" (click)="titleService.setSubTitle(tmp.title)">
+					{{ tmp.value }}
+				</a>
             </li>
         </ul>
     </div>
