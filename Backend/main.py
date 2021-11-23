@@ -1,11 +1,5 @@
 
-from website import app, api
-
-# http server module
-# from gevent.pywsgi import WSGIServer
-
-
+from backend import app
 if __name__ == "__main__":
-    # dev.
-    app.run(threaded=True)
-    # production
+    app.run()
+
