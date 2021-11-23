@@ -54,12 +54,7 @@ export class Chart_custom {
 				showDelay: 0,
 				transitionDuration: 0.2,
 				position: function (pos, params, dom, rect, size) {
-					return [
-						size.viewSize[0] - pos[0] > size.viewSize[0] * 0.4
-							? pos[0]
-							: '60%',
-						'10%',
-					];
+					return [size.viewSize[0] / 2.25, '1%'];
 				},
 				formatter: function (params: any) {
 					let data = params[0];

@@ -71,13 +71,21 @@
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-height: 50px;
-    min-width: 50vw;
+    min-height: 10ch;
+    min-width: 35ch;
+    max-height: 15ch;
+    max-width: 50ch;
     padding: 5px;
     white-space: pre-line;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 1em;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(199, 199, 199);
+    border-radius: 4px;
 }
 
 .show {

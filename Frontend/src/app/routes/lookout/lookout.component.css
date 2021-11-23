@@ -25,13 +25,18 @@
 }
 
 .selected-station {
+    font-size: 3ch;
     min-height: 6vh;
     border: 1px solid black;
     width: auto;
-    max-width: 12ch;
-    margin: 1rem auto 0 auto;
+    max-width: 20ch;
+    margin: 1rem auto 1rem auto;
     background-color: rgb(201, 230, 250);
     border-radius: 1em;
+}
+
+.choice {
+    margin-bottom: 0;
 }
 
 .datepicker-container {
@@ -40,7 +45,7 @@
 }
 
 mat-form-field {
-    margin: 1em 0 0 0;
+    margin: 0 0 0 0;
     min-width: fit-content;
     min-width: 20%;
     max-width: 15rem;
