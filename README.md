@@ -12,29 +12,28 @@ Progetto di scuola lavoro
 * ##### Registrarsi su [Heroku](https://heroku.com/ "Heroku") 
 * ##### Scaricare [Heroku CLI](https://cli-assets.heroku.com/heroku-x64.exe "Heroku CLI")
 * ##### Eseguire il login su Heroku CLI (in cmd) con " _heroku login_ "
+* \*Dentro la cartella **Heroku** eseguire nel cmd:
+  * Creare un git nuovo [ **git init** ]
+  * Creare una nuova applicazione [ **heroku create \<nome applicazione> --region=eu** ]
 *	### Backend:
 	( I file necessari per heroku sono _Procfile_  e _runtime.txt_ )
 	* Configurare il file **.env** con l\'aiuto del template di **.env-example**
-	* **Opzionale**: _spostare/copiare la cartella Backend fuori dal progetto_
-	* Creare un nuovo git dentro la directory "Backend" [ git init ]
-		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_ "
-		* Creare l\'app di Heroku "_heroku create \<nome app>_"
-		* Eseguire il push sul branch master del git con "_git push heroku master_"
+	* Copiare dalla cartella **Backend** [ _il file_ **.env** _e la cartella_ **backend** ] in **Heroku**
     ------------
 * ### Frontend
 	* in **./Frontend/src/environments/** creare **environment.dev.ts** con il seguente codice:
 		* ```
 			export const environment = {
-				apiUrl: '<sito del backend su heroku>',
-				user: '<[jwt_user] del file .env del backend>',
-				passw: '<[jwt_password] del file .env del backend>',
+				apiUrl: '<*nome dell\'applicazione di heroku>',
+				user: '<[jwt_user] del file .env>',
+				passw: '<[jwt_password] del file .env>',
 			}; 
 	* Eseguire il comando "_ng build --prod --build-optimizer_"
-	* Copiare dentro la cartella **./Frontend/deployment/website/**  tutti i file da  **./Frontend/dist/Frontend/**
-	* **Opzionale**: _spostare/copiare la cartella deployment fuori dal progetto_ 
-	* Creare un nuovo git dentro la directory "deployment" [ _git init_ ]
-		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_ "
-		* Creare l\'app di Heroku "_heroku create \<nome app>_"
-		* Eseguire il push sul branch master del git con "_git push heroku master_"
+	* Copiare dentro la cartella **Heroku/frontend**  website/**  tutti i file della build creata  ( **Frontend/dist/Frontend/** )
+---
+
+* Eseguire: "_git add -\-all_" e "_git commit -m 'Commit iniziale'_ "
+* Eseguire il push sul branch master del git con "_git push heroku master_"
+
 ------------
 [editor]:https://markdown-editor.github.io/
