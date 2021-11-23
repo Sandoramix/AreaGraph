@@ -25,11 +25,11 @@ export class LinechartComponent implements OnInit {
 
 		`Le polveri fini, denominate <b>PM2.5</b> (diametro inferiore a 2.5 µm), 
 		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.
-		Le sorgenti possono essere di tipo <b>organica</b> o <b>inorganica</b>`,
+		Le sorgenti possono essere di tipo <b>organico</b> o <b>inorganico</b>`,
 
 		`Le polveri fini, denominate <b>PM10</b> (diametro inferiore a 10 µm), 
 		Sono un insieme di particelle solide e liquide con una grande varieta' di caratteristiche fisiche, chimiche, geometriche e morfologiche.
-		Le sorgenti possono essere di tipo <b>organica</b> o <b>inorganica</b>`,
+		Le sorgenti possono essere di tipo <b>organico</b> o <b>inorganico</b>`,
 	];
 	sensor_info: string;
 	selected_sensor_type: string;
