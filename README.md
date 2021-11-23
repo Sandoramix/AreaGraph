@@ -16,7 +16,7 @@ Progetto di scuola lavoro
   * Creare un git nuovo [ **git init** ]
   * Creare una nuova applicazione [ **heroku create \<nome applicazione> --region=eu** ]
 *	### Backend:
-	( I file necessari per heroku sono _Procfile_  e _runtime.txt_ )
+	
 	* Configurare il file **.env** con l\'aiuto del template di **.env-example**
 	* Copiare dalla cartella **Backend** [ _il file_ **.env** _e la cartella_ **backend** ] in **Heroku**
     ------------
