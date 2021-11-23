@@ -16,7 +16,7 @@ Progetto di scuola lavoro
 	( I file necessari per heroku sono _Procfile_  e _runtime.txt_ )
 	* Configurare il file **.env** con l\'aiuto del template di **.env-example**
 	* **Opzionale**: _spostare/copiare la cartella backend fuori dal progetto_
-	* Creare un git vuoto dentro la cartella backend [ git init ]
+	* Creare un nuovo git dentro la directory [ git init ]
 		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_"
 		* Creare l\'app di Heroku "_heroku create \<nome app>_"
 		* Eseguire il push sul branch master del git con "_git push heroku master_"
@@ -32,7 +32,7 @@ Progetto di scuola lavoro
 	* Eseguire il comando "_ng build --prod --build-optimizer_"
 	* Dentro la cartella **./Frontend/deployment/website/** copiare tutti i file da **./Frontend/dist/Frontend/**
 	* **Opzionale**: _spostare/copiare la cartella deployment fuori dal progetto_ 
-	* Creare un git vuoto dentro la directory
+	* Creare un nuovo git dentro la directory [ _git init_ ]
 		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_"
 		* Creare l\'app di Heroku "_heroku create \<nome app>_"
 		* Eseguire il push sul branch master del git con "_git push heroku master_"
