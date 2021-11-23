@@ -33,7 +33,7 @@ Progetto di scuola lavoro
 	* Copiare dentro la cartella **./Frontend/deployment/website/**  tutti i file da  **./Frontend/dist/Frontend/**
 	* **Opzionale**: _spostare/copiare la cartella deployment fuori dal progetto_ 
 	* Creare un nuovo git dentro la directory "deployment" [ _git init_ ]
-		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_"
+		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_ "
 		* Creare l\'app di Heroku "_heroku create \<nome app>_"
 		* Eseguire il push sul branch master del git con "_git push heroku master_"
 ------------
