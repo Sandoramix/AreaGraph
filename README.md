@@ -12,7 +12,7 @@ Progetto di scuola lavoro
 * ##### Registrarsi su [Heroku](https://heroku.com/ "Heroku") 
 * ##### Scaricare [Heroku CLI](https://cli-assets.heroku.com/heroku-x64.exe "Heroku CLI")
 * ##### Eseguire il login su Heroku CLI (in cmd) con " _heroku login_ "
-* \*Dentro la cartella **Heroku** eseguire nel cmd:
+* \*Dentro la cartella **Heroku** :
   * Creare un git nuovo [ **git init** ]
   * Creare una nuova applicazione [ **heroku create \<nome applicazione> --region=eu** ]
 *	### Backend:
@@ -30,10 +30,9 @@ Progetto di scuola lavoro
 			}; 
 	* Eseguire il comando "_ng build --prod --build-optimizer_"
 	* Copiare dentro la cartella **Heroku/frontend**  website/**  tutti i file della build creata  ( **Frontend/dist/Frontend/** )
----
+	------------
 
-* Eseguire: "_git add -\-all_" e "_git commit -m 'Commit iniziale'_ "
-* Eseguire il push sul branch master del git con "_git push heroku master_"
-
+* ##### Eseguire: "_git add -\-all_" e "_git commit -m 'Commit iniziale'_ "
+* ##### Eseguire il push sul branch master del git con "_git push heroku master_"
 ------------
 [editor]:https://markdown-editor.github.io/
