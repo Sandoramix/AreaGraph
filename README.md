@@ -30,7 +30,7 @@ Progetto di scuola lavoro
 				passw: '<[jwt_password] del file .env del backend>',
 			}; 
 	* Eseguire il comando "_ng build --prod --build-optimizer_"
-	* Dentro la cartella **./Frontend/deployment/website/** copiare tutti i file da **./Frontend/dist/Frontend/**
+	* Copiare dentro la cartella **./Frontend/deployment/website/**  tutti i file da  **./Frontend/dist/Frontend/**
 	* **Opzionale**: _spostare/copiare la cartella deployment fuori dal progetto_ 
 	* Creare un nuovo git dentro la directory [ _git init_ ]
 		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_"
