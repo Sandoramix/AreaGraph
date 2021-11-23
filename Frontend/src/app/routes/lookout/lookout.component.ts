@@ -73,7 +73,7 @@ export class LookoutComponent implements OnInit {
 				this.map.addMarkers(this.stations);
 			},
 			error: (err) => {
-				alert('Connection error... Try again later.');
+				alert("Errore di connessione... Ritenta piu' tardi");
 			},
 		});
 	}
@@ -100,7 +100,7 @@ export class LookoutComponent implements OnInit {
 				let tmpAvg = stAvg.data_hourly_avg;
 				if (tmpAvg == null || tmpAvg.length == 0) {
 					alert(
-						"This station doesn't have any records in this date range"
+						`La stazione "${this.selected_station}" non ha nessun valore nel periodo selezionato`
 					);
 					return;
 				}
