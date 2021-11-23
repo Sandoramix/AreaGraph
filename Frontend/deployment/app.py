@@ -8,27 +8,27 @@ cors = CORS(app, send_wildcard=True)
 @app.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
     print(path)
-    return send_from_directory('./website', path)
+    return send_from_directory('./frontend', path)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def root():
-    return send_from_directory('./website', 'index.html')
+    return send_from_directory('./frontend', 'index.html')
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET'])
 def home():
-    return send_from_directory('./website', 'index.html')
+    return send_from_directory('./frontend', 'index.html')
 
 
-@app.route('/about')
+@app.route('/about', methods=['GET'])
 def about():
-    return send_from_directory('./website', 'index.html')
+    return send_from_directory('./frontend', 'index.html')
 
 
-@app.route('/map')
+@app.route('/map', methods=['GET'])
 def map():
-    return send_from_directory('./website', 'index.html')
+    return send_from_directory('./frontend', 'index.html')
 
 
 if __name__ == "__main__":
