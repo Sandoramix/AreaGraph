@@ -17,7 +17,7 @@ Progetto di scuola lavoro
 	* Configurare il file **.env** con l\'aiuto del template di **.env-example**
 	* **Opzionale**: _spostare/copiare la cartella Backend fuori dal progetto_
 	* Creare un nuovo git dentro la directory "Backend" [ git init ]
-		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_"
+		* Eseguire: "_git add -\-all_" e "_git commit -m '.'_ "
 		* Creare l\'app di Heroku "_heroku create \<nome app>_"
 		* Eseguire il push sul branch master del git con "_git push heroku master_"
     ------------
