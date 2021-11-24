@@ -4,11 +4,26 @@
 
 Progetto di scuola lavoro
 
-## Obiettivo:
-*	Creare un'applicazione web dove selezionando una centralina [e.x. di Prato], e scegliendo un intervallo di tempo, di ottenere il grafico/media dei valori in quel periodo.
+## OBIETTIVO:
+**Studiare, progettare e sviluppare un'applicazione software per la visualizzazione su web di dati relativi alla qualità dell’aria, ricavati da un database.**
+
+
+## DESCRIZIONE
+Il risultato finale e’ stato semplificato a causa del poco tempo disponibile, ma racchiude tutti i punti dell’obiettivo, ovvero:
+* Creare un software per la visualizzazione **web**:
+* Selezionare una **centralina** tra quelle disponibili (su una **mappa** integrata)
+* Scegliere un **intervallo di tempo** a piacere
+* Dati i valori giusti, ottenere i dati dal backend che li richiede al database primario
+* Visualizzare in un **grafico** i dati relativi agli **inquinanti dell’aria**  nel periodo scelto
+Il semplice design del sito e’ stato creato usando Bootstrap 4 e del CSS puro,
+in maniera quasi del tutto responsive e intuitivo.
+
+Per il backend e’ stato utilizzato framework **Flask** di **Python**
+
+E per il frontend e’ stato utilizzato il framework **AngularJS (V13.0.1)**, di **NodeJS**
 
 ------------
-## Passaggi per il Deploy
+## PASSAGGI PER IL DEPLOY
 * ##### Registrarsi su [Heroku](https://heroku.com/ "Heroku") 
 * ##### Scaricare [Heroku CLI](https://cli-assets.heroku.com/heroku-x64.exe "Heroku CLI")
 * ##### Eseguire il login su Heroku CLI (in cmd) con " _heroku login_ "
