@@ -4,4 +4,7 @@
 Per il deploy su heroku c'e bisogno del modello di python "Gunicorn" che e' disponibile solamente su **linux**
 
 ##### Se si vuole avviare il backend localmente su windows [dev mode]:
-*	cancellare da _requirements.txt_ il modulo "_gunicorn_" [ perche' e' inutilizzato]
+*	su **main** importare WSGIServer da gevent.pywsgi e cambiare app.run() con :
+  ``` 
+  server=WSGIServer(('0.0.0.0',80),app)
+  server.serve_forever()   
