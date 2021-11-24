@@ -27,16 +27,16 @@ E per il frontend e’ stato utilizzato il framework **AngularJS (V13.0.1)**, di
 * ##### Registrarsi su [Heroku](https://heroku.com/ "Heroku") 
 * ##### Scaricare [Heroku CLI](https://cli-assets.heroku.com/heroku-x64.exe "Heroku CLI")
 * ##### Eseguire il login su Heroku CLI (in cmd) con " _heroku login_ "
-* \*Dentro la cartella **Heroku** :
+* \*Dentro la cartella **Heroku/** :
   * Creare un git nuovo [ **git init** ]
   * Creare una nuova applicazione [ **heroku create \<nome applicazione> --region=eu** ]
 *	### Backend:
 	
 	* Configurare il file **.env** con l\'aiuto del template di **.env-example**
-	* Copiare dalla cartella **Backend** [ _il file_ **.env** _e la cartella_ **backend** ] in **Heroku**
+	* Copiare dalla cartella **Backend/** [ _il file_ **.env** (da creare) _e la cartella_ **backend** ] in **Heroku**
     ------------
 * ### Frontend
-	* in **./Frontend/src/environments/** creare **environment.dev.ts** con il seguente codice:
+	* in **Frontend/src/environments/** creare **environment.dev.ts** con il seguente codice:
 		* ```
 			export const environment = {
 				apiUrl: '<*nome dell\'applicazione di heroku>',
@@ -44,10 +44,10 @@ E per il frontend e’ stato utilizzato il framework **AngularJS (V13.0.1)**, di
 				passw: '<[jwt_password] del file .env>',
 			}; 
 	* Eseguire il comando "_ng build --prod --build-optimizer_"
-	* Copiare dentro la cartella **Heroku/frontend**  website/**  tutti i file della build creata  ( **Frontend/dist/Frontend/** )
+	* Copiare dentro la cartella **Heroku/frontend/**  tutti i file della build creata  ( **Frontend/dist/Frontend/** )
 	------------
 
 * ##### Eseguire: "_git add -\-all_" e "_git commit -m 'Commit iniziale'_ "
-* ##### Eseguire il push sul branch master del git con "_git push heroku master_"
+* ##### Eseguire il push sul branch master di heroku [ "_git push heroku master_" ]
 ------------
 [editor]:https://markdown-editor.github.io/
