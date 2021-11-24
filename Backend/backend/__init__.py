@@ -5,7 +5,7 @@ from flask import Flask, make_response
 from flask_restful import Api
 from flask_cors import CORS
 
-from .controllers import StationDataAvgController, AllStations, WorkingStations, request, environ, jwt, jsonify
+from .controllers import StationDataAvgController, AllStations, WorkingStations, HomePage, request, environ, jwt, jsonify
 
 # flask app
 app = Flask(__name__)
