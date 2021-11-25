@@ -2,8 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.1.
 
+## TODO
+in **src/environments/** create **environment.dev.ts** with the following code:
+```
+export const environment = {
+	apiUrl: 'https://<heroku app name>.herokuapp.com/api/',
+	user: '<[jwt_user] from .env file (in ../Backend/ )>',
+	passw: '<[jwt_password] from .env file (in ../Backend/ )>',
+}; 
+```
 ## Start
 Run npm install to install all dependencies.
+
 
 ## Development server
 
