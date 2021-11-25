@@ -1,31 +1,22 @@
-import { EChartsOption } from 'echarts';
+import { EChartsOption } from "echarts";
 
 export class Chart_custom {
-	private x_type: 'category' | 'log' | 'time' | 'value' = 'category';
-
+	private x_type: "category" | "log" | "time" | "value" = "category";
 	newLineChart(
 		x_vals?: string[],
 		y_vals?: number[],
-		unit: string = ''
+		unit: string = "",
+		limit?: number
 	): EChartsOption {
 		return {
 			...this.xAxisPart(x_vals ? x_vals : []),
 
-			...this.yAxisPart(unit),
-			...this.seriesPart(y_vals ? y_vals : []),
+			...this.yAxisPart(unit, limit ? limit : -1),
+			...this.seriesPart(unit, y_vals ? y_vals : [], limit ? limit : -1),
 			...this.tooltipPart(unit),
-			toolbox: {
-				feature: {
-					dataZoom: {
-						yAxisIndex: 'none',
-					},
-					restore: {},
-					saveAsImage: {},
-				},
-			},
 			dataZoom: [
 				{
-					type: 'inside',
+					type: "inside",
 					start: 0,
 					end: 100,
 				},
@@ -38,23 +29,24 @@ export class Chart_custom {
 		};
 	}
 
-	mergedSeriesData(x: string[], y: number[], unit: string) {
+	mergedSeriesData(x: string[], y: number[], unit: string, limit: number) {
 		return {
 			...this.xAxisPart(x),
-			...this.yAxisPart(unit),
-			...this.seriesPart(y),
+			...this.yAxisPart(unit, limit),
+			...this.seriesPart(unit, y, limit),
 			...this.tooltipPart(unit),
+			...this.toolboxPart(unit),
 		};
 	}
 
 	private tooltipPart(unit: string): EChartsOption {
 		return {
 			tooltip: {
-				trigger: 'axis',
+				trigger: "axis",
 				showDelay: 0,
 				transitionDuration: 0.2,
 				position: function (pos, params, dom, rect, size) {
-					return [size.viewSize[0] / 2.25, '1%'];
+					return [size.viewSize[0] / 2.25, "1%"];
 				},
 				formatter: function (params: any) {
 					let data = params[0];
@@ -67,25 +59,32 @@ export class Chart_custom {
 			},
 		};
 	}
-
-	private seriesPart(y: number[]): EChartsOption {
+	private toolboxPart(unit: string): EChartsOption {
 		return {
-			series: {
-				data: y,
-				type: 'line',
-
-				areaStyle: {},
-				smooth: true,
+			toolbox: {
+				feature: {
+					dataView: {
+						show: true,
+						readOnly: true,
+						title: unit == "" ? "" : `Records del sensore [${unit}]`,
+					},
+					dataZoom: {
+						yAxisIndex: "none",
+					},
+					restore: { show: false },
+					saveAsImage: { show: true },
+				},
 			},
 		};
 	}
+
 	private xAxisPart(x: string[]): EChartsOption {
 		return {
 			xAxis: {
 				type: this.x_type,
-				boundaryGap: ['10%', '10%'],
+				boundaryGap: ["10%", "10%"],
 				data: x,
-
+				name: "Data",
 				axisLine: {
 					show: true,
 				},
@@ -93,21 +92,49 @@ export class Chart_custom {
 		};
 	}
 
-	private yAxisPart(unit: string): EChartsOption {
+	private yAxisPart(unit: string, limit: number): EChartsOption {
 		return {
 			yAxis: {
-				type: 'value',
+				type: "value",
 				name: unit,
 				nameTextStyle: {
-					fontWeight: 'bold',
-					align: 'right',
+					fontWeight: "bold",
+					align: "right",
+				},
+				position: "left",
+				boundaryGap: ["0%", "100%"],
+				max: (val) => {
+					return unit === "%" ? 100 : Math.floor(val.max) + 1;
 				},
 
-				boundaryGap: ['0%', '100%'],
-				max: (val) => {
-					return unit === '%' ? 100 : Math.round(val.max);
+				maxInterval: 25,
+				minInterval: 1,
+			},
+		};
+	}
+
+	private seriesPart(unit: string, y: number[], limit: number): EChartsOption {
+		let markLn = {};
+		if (limit != -1) {
+			markLn = {
+				name: "Limite",
+				data: [{ name: "Limite", yAxis: limit }],
+				lineStyle: {
+					color: "red",
+					type: "solid",
+					shadowBlur: 2,
 				},
-				maxInterval: 50,
+			};
+		}
+		return {
+			series: {
+				data: y,
+				type: "line",
+				name: unit,
+				areaStyle: {},
+				smooth: true,
+
+				markLine: markLn,
 			},
 		};
 	}

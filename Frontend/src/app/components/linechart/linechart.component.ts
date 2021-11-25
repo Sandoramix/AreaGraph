@@ -1,17 +1,17 @@
-import { StationHourlyAvg } from 'src/utils/StationHourlyAvg';
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
-import { EChartsOption } from 'echarts';
-import { Chart_custom } from 'src/utils/Chart-class';
+import { StationHourlyAvg } from "src/utils/StationHourlyAvg";
+import { Component, Input, OnInit, Renderer2 } from "@angular/core";
+import { EChartsOption } from "echarts";
+import { Chart_custom } from "src/utils/Chart-class";
 
 @Component({
-	selector: 'app-linechart',
-	templateUrl: './linechart.component.html',
-	styleUrls: ['./linechart.component.css'],
+	selector: "app-linechart",
+	templateUrl: "./linechart.component.html",
+	styleUrls: ["./linechart.component.css"],
 })
 export class LinechartComponent implements OnInit {
 	private chart_class: Chart_custom = new Chart_custom();
 
-	sensor_values: string[] = ['CO2', 'T', 'RH', 'PM2.5', 'PM10'];
+	sensor_values: string[] = ["CO2", "T", "RH", "PM2.5", "PM10"];
 	private sensor_help_info: string[] = [
 		`<b>L’anidride carbonica</b> (CO2) è un gas inodore ed incolore, ed è tra i gas ad effetto serra che maggiormente contribuiscono al riscaldamento del pianeta.
 		Tali gas presenti nell’atmosfera terrestre catturano il calore del sole impedendogli di ritornare nello spazio.
@@ -43,16 +43,16 @@ export class LinechartComponent implements OnInit {
 	help: string;
 
 	constructor(private renderer: Renderer2) {
-		this.renderer.listen('window', 'click', (e: Event) => {
+		this.renderer.listen("window", "click", (e: Event) => {
 			let info: any = e.target;
 			let _id: string = info.id;
 
 			let _class: string = info.classList[0];
 
 			if (
-				_class !== 'info-content' &&
-				_class !== 'info-icon' &&
-				_id !== 'info-content-shape'
+				_class !== "info-content" &&
+				_class !== "info-icon" &&
+				_id !== "info-content-shape"
 			) {
 				this.infoDropdownRemove();
 			}
@@ -71,11 +71,11 @@ export class LinechartComponent implements OnInit {
 	updateHandler(datas?: StationHourlyAvg[]) {
 		if (datas) {
 			this.data = datas;
-			this.selected_sensor_type = '';
+			this.selected_sensor_type = "";
 		}
 
 		let index = this.sensor_values.indexOf(this.selected_sensor_type);
-		this.sensor_info = index == -1 ? '' : this.sensor_help_info[index];
+		this.sensor_info = index == -1 ? "" : this.sensor_help_info[index];
 		this.updateChart();
 	}
 
@@ -89,7 +89,7 @@ export class LinechartComponent implements OnInit {
 
 		let x: string[] = [];
 		let y: number[] = [];
-		let sensor_unit: string = '';
+		let sensor_unit: string = "";
 
 		if (tmp_values.length > 0) {
 			sensor_unit = tmp_values[0].sensor.unit;
@@ -102,14 +102,13 @@ export class LinechartComponent implements OnInit {
 			y = tmp_values.map((h) => {
 				let avg = h.avg_value;
 				if (
-					this.selected_sensor_type != 'RH' &&
-					this.selected_sensor_type != 'T'
+					this.selected_sensor_type != "RH" &&
+					this.selected_sensor_type != "T"
 				) {
 					return avg;
 				}
-				if (this.selected_sensor_type == 'T') {
+				if (this.selected_sensor_type == "T") {
 					avg = avg < 60 ? avg : avg >= 600 ? avg / 100 : avg / 10;
-					console.log(avg);
 
 					return avg;
 				}
@@ -120,11 +119,26 @@ export class LinechartComponent implements OnInit {
 					: avg / 100;
 			});
 		}
+		let limit: number = -1;
+		switch (this.selected_sensor_type) {
+			case "PM2.5": {
+				limit = 25;
+				break;
+			}
+			case "PM10": {
+				limit = 40;
+				break;
+			}
+			case "CO2": {
+				limit = 400;
+				break;
+			}
+		}
 
 		if (this.main_chart) {
 			this.main_chart.setOption(
 				{
-					...this.chart_class.mergedSeriesData(x, y, sensor_unit),
+					...this.chart_class.mergedSeriesData(x, y, sensor_unit, limit),
 				},
 				{
 					notMerge: false,
@@ -135,29 +149,29 @@ export class LinechartComponent implements OnInit {
 
 	infoDropdownToggle() {
 		let info_dropdown = document
-			? document.getElementById('info-content-dropdown')
+			? document.getElementById("info-content-dropdown")
 			: null;
 		if (!info_dropdown) return;
-		info_dropdown.classList.toggle('show');
+		info_dropdown.classList.toggle("show");
 
 		let info_dropdown_shape = document
-			? document.getElementById('info-content-shape')
+			? document.getElementById("info-content-shape")
 			: null;
 		if (!info_dropdown_shape) return;
-		info_dropdown_shape.classList.toggle('visible');
+		info_dropdown_shape.classList.toggle("visible");
 	}
 
 	private infoDropdownRemove() {
 		let info_dropdown = document
-			? document.getElementById('info-content-dropdown')
+			? document.getElementById("info-content-dropdown")
 			: null;
 		if (!info_dropdown) return;
-		info_dropdown.classList.remove('show');
+		info_dropdown.classList.remove("show");
 
 		let info_dropdown_shape = document
-			? document.getElementById('info-content-shape')
+			? document.getElementById("info-content-shape")
 			: null;
 		if (!info_dropdown_shape) return;
-		info_dropdown_shape.classList.remove('visible');
+		info_dropdown_shape.classList.remove("visible");
 	}
 }
