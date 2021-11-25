@@ -39,7 +39,7 @@ E per il frontend e’ stato utilizzato il framework **AngularJS (V13.0.1)**, di
 	* in **Frontend/src/environments/** creare **environment.dev.ts** con il seguente codice:
 		* ```
 			export const environment = {
-				apiUrl: '*https://<nome dell'app di heroku>.herokuapp.com/api/',
+				apiUrl: 'https://<nome dell'app di heroku>.herokuapp.com/api/',
 				user: '<[jwt_user] del file .env>',
 				passw: '<[jwt_password] del file .env>',
 			}; 
