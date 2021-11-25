@@ -10,7 +10,7 @@ export class Chart_custom {
 	): EChartsOption {
 		return {
 			...this.xAxisPart(x_vals ? x_vals : []),
-
+			...this.toolboxPart(unit),
 			...this.yAxisPart(unit, limit ? limit : -1),
 			...this.seriesPart(unit, y_vals ? y_vals : [], limit ? limit : -1),
 			...this.tooltipPart(unit),
@@ -26,16 +26,6 @@ export class Chart_custom {
 					end: 100,
 				},
 			],
-		};
-	}
-
-	mergedSeriesData(x: string[], y: number[], unit: string, limit: number) {
-		return {
-			...this.xAxisPart(x),
-			...this.yAxisPart(unit, limit),
-			...this.seriesPart(unit, y, limit),
-			...this.tooltipPart(unit),
-			...this.toolboxPart(unit),
 		};
 	}
 
@@ -66,13 +56,13 @@ export class Chart_custom {
 					dataView: {
 						show: true,
 						readOnly: true,
-						title: unit == "" ? "" : `Records del sensore [${unit}]`,
+						title: unit == "" ? "" : `Records [${unit}]`,
 					},
 					dataZoom: {
 						yAxisIndex: "none",
 					},
 					restore: { show: false },
-					saveAsImage: { show: true },
+					saveAsImage: { show: true, title: "Save" },
 				},
 			},
 		};
@@ -96,45 +86,56 @@ export class Chart_custom {
 		return {
 			yAxis: {
 				type: "value",
+
 				name: unit,
 				nameTextStyle: {
 					fontWeight: "bold",
 					align: "right",
 				},
+
 				position: "left",
 				boundaryGap: ["0%", "100%"],
+
 				max: (val) => {
 					return unit === "%" ? 100 : Math.floor(val.max) + 1;
 				},
 
 				maxInterval: 25,
-				minInterval: 1,
+				minInterval: 0,
 			},
 		};
 	}
 
 	private seriesPart(unit: string, y: number[], limit: number): EChartsOption {
-		let markLn = {};
-		if (limit != -1) {
-			markLn = {
-				name: "Limite",
-				data: [{ name: "Limite", yAxis: limit }],
-				lineStyle: {
-					color: "red",
-					type: "solid",
-					shadowBlur: 2,
-				},
-			};
-		}
 		return {
 			series: {
 				data: y,
 				type: "line",
 				name: unit,
-				areaStyle: {},
 				smooth: true,
+				areaStyle: {},
+				markLine: {
+					data: [
+						{
+							name: "Limite",
+							yAxis: limit,
+							label: {
+								position: "insideStartBottom",
+								formatter: function (params) {
+									return `Limite: ${params.value}`;
+								},
+								fontWeight: "bold",
 
-				markLine: markLn,
+								color: "yellow",
+							},
+						},
+					],
+					lineStyle: {
+						color: "red",
+						type: "solid",
+						shadowBlur: 2,
+					},
+				},
 			},
 		};
 	}

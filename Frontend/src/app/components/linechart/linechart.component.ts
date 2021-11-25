@@ -80,11 +80,12 @@ export class LinechartComponent implements OnInit {
 	}
 
 	private updateChart() {
+		let current_sensor = this.selected_sensor_type;
 		let tmp_values =
 			this.data == null
 				? []
 				: this.data.filter((obj) => {
-						return obj.sensor.type == this.selected_sensor_type;
+						return obj.sensor.type == current_sensor;
 				  });
 
 		let x: string[] = [];
@@ -101,13 +102,10 @@ export class LinechartComponent implements OnInit {
 			});
 			y = tmp_values.map((h) => {
 				let avg = h.avg_value;
-				if (
-					this.selected_sensor_type != "RH" &&
-					this.selected_sensor_type != "T"
-				) {
+				if (current_sensor != "RH" && current_sensor != "T") {
 					return avg;
 				}
-				if (this.selected_sensor_type == "T") {
+				if (current_sensor == "T") {
 					avg = avg < 60 ? avg : avg >= 600 ? avg / 100 : avg / 10;
 
 					return avg;
@@ -119,8 +117,9 @@ export class LinechartComponent implements OnInit {
 					: avg / 100;
 			});
 		}
-		let limit: number = -1;
-		switch (this.selected_sensor_type) {
+
+		let limit: number = -100;
+		switch (current_sensor) {
 			case "PM2.5": {
 				limit = 25;
 				break;
@@ -133,15 +132,19 @@ export class LinechartComponent implements OnInit {
 				limit = 400;
 				break;
 			}
+			default: {
+				limit = -100;
+				break;
+			}
 		}
 
 		if (this.main_chart) {
 			this.main_chart.setOption(
 				{
-					...this.chart_class.mergedSeriesData(x, y, sensor_unit, limit),
+					...this.chart_class.newLineChart(x, y, sensor_unit, limit),
 				},
 				{
-					notMerge: false,
+					notMerge: true,
 				}
 			);
 		}
