@@ -32,7 +32,7 @@ export class LinechartComponent implements OnInit {
 		Le sorgenti possono essere di tipo <b>organico</b> o <b>inorganico</b>`,
 	];
 	sensor_info: string;
-	selected_sensor_type: string;
+	selected_sensor_type: string = "CO2";
 
 	private main_chart: any;
 	chart_options: EChartsOption;
@@ -61,7 +61,6 @@ export class LinechartComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.main_chart = null;
-		this.chart_options = this.chart_class.newLineChart();
 	}
 
 	chartInit(ev: any) {
@@ -71,7 +70,7 @@ export class LinechartComponent implements OnInit {
 	updateHandler(datas?: StationHourlyAvg[]) {
 		if (datas) {
 			this.data = datas;
-			this.selected_sensor_type = "";
+			this.selected_sensor_type = "CO2";
 		}
 
 		let index = this.sensor_values.indexOf(this.selected_sensor_type);
@@ -137,7 +136,15 @@ export class LinechartComponent implements OnInit {
 				break;
 			}
 		}
-
+		if (!this.chart_options) {
+			this.chart_options = this.chart_class.newLineChart(
+				x,
+				y,
+				sensor_unit,
+				limit
+			);
+			return;
+		}
 		if (this.main_chart) {
 			this.main_chart.setOption(
 				{

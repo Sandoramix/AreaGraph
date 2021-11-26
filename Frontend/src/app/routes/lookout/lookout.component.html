@@ -1,41 +1,76 @@
 <div class="lookout-container">
-    <div class="top-container">
-        <app-map (onStationSelect)="stationSelectHandler($event)"></app-map>
-        <div *ngIf="selected_station !== ''">
-            <h1 class="text-success text-center selected-station">
-                Stazione {{ selected_station }}
-            </h1>
-            <div class="bottom">
-                <p class="text-yellow text-center choice">
-                    <b>Scegli un intervallo</b>
-                </p>
-                <div class="datepicker-container">
-                    <mat-form-field appearance="fill" class="mr-3 datepicker-item">
-                        <mat-label class="text-primary">Data inizio</mat-label>
-                        <input readonly matInput [matDatepicker]="startpicker" [value]="date_from.value" [max]="max_date" (dateInput)="date_fromInputHandler($event)" (dateChange)="date_fromInputHandler($event)" />
-                        <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-                        <mat-datepicker #startpicker></mat-datepicker>
-                    </mat-form-field>
+	<div class="top-container">
+		<app-map (onStationSelect)="stationSelectHandler($event)"></app-map>
+		<div *ngIf="selected_station !== ''">
+			<h1 class="text-success text-center selected-station">
+				Stazione {{ selected_station }}
+			</h1>
+			<div class="bottom">
+				<p class="text-yellow text-center choice">
+					<b *ngIf="!validDates()">Scegli un intervallo</b>
+				</p>
+				<div class="datepicker-container">
+					<mat-form-field appearance="fill" class="mr-3 datepicker-item">
+						<mat-label class="text-primary">Data inizio</mat-label>
+						<input
+							readonly
+							matInput
+							[matDatepicker]="startpicker"
+							[value]="date_from.value"
+							[max]="max_date"
+							(dateInput)="date_fromInputHandler($event)"
+							(dateChange)="date_fromInputHandler($event)"
+						/>
+						<mat-datepicker-toggle
+							matSuffix
+							[for]="startpicker"
+						></mat-datepicker-toggle>
+						<mat-datepicker #startpicker></mat-datepicker>
+					</mat-form-field>
 
-                    <mat-form-field appearance="fill" class="datepicker-item">
-                        <mat-label class="text-primary">Data fine</mat-label>
-                        <input readonly matInput [matDatepicker]="endpicker" [value]="date_to.value" [min]="date_from.value" [max]="max_date" (dateInput)="date_toInputHandler($event)" (dateChange)="date_toInputHandler($event)" />
-                        <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-                        <mat-datepicker #endpicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="btn_custom">
-                    <button [disabled]="!validDates()" type="button" class="btn btn-primary text-center bg-info" style="width: 10em" (click)="getStationHandler()">
+					<mat-form-field appearance="fill" class="datepicker-item">
+						<mat-label class="text-primary">Data fine</mat-label>
+						<input
+							readonly
+							matInput
+							[matDatepicker]="endpicker"
+							[value]="date_to.value"
+							[min]="date_from.value"
+							[max]="max_date"
+							(dateInput)="date_toInputHandler($event)"
+							(dateChange)="date_toInputHandler($event)"
+						/>
+						<mat-datepicker-toggle
+							matSuffix
+							[for]="endpicker"
+						></mat-datepicker-toggle>
+						<mat-datepicker #endpicker></mat-datepicker>
+					</mat-form-field>
+				</div>
+				<div class="btn_custom">
+					<button
+						[disabled]="!validDates()"
+						type="button"
+						class="btn btn-primary text-center bg-info"
+						style="width: 10em"
+						(click)="getStationHandler()"
+					>
 						Cerca
 					</button>
-                </div>
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div id="chart" ngClass="{{
+	<div
+		id="chart"
+		ngClass="{{
 			sHourlyAvg != null && sHourlyAvg.length > 0 ? 'active' : 'inactive'
-		}}">
-        <app-linechart [data]="sHourlyAvg" [enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"></app-linechart>
-    </div>
+		}}"
+	>
+		<app-linechart
+			[data]="sHourlyAvg"
+			[enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"
+		></app-linechart>
+	</div>
 </div>

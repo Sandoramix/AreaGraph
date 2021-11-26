@@ -42,8 +42,8 @@ export class LookoutComponent implements OnInit {
 
 	date_from: FormControl = new FormControl();
 	date_to: FormControl = new FormControl();
-	private _date_from: string = "";
-	private _date_to: string = "";
+	_date_from: string = "";
+	_date_to: string = "";
 	max_date: Date = new Date();
 
 	stations: Station[] = [];
@@ -107,10 +107,7 @@ export class LookoutComponent implements OnInit {
 				}
 
 				this.sHourlyAvg = stAvg.data_hourly_avg;
-				this._date_from = "";
-				this._date_to = "";
-				this.date_from.setValue("");
-				this.date_to.setValue("");
+
 				this.linechart.updateHandler(this.sHourlyAvg);
 				setTimeout(() => {
 					let chart = document.getElementById("chart");
@@ -128,6 +125,7 @@ export class LookoutComponent implements OnInit {
 		this.date_from.setValue(new Date(event.value));
 		if (this.date_from.value > this.date_to.value) {
 			this.date_to.setValue("");
+			this._date_to = "";
 		}
 
 		this._date_from = event.value.format(MY_FORMATS.display.dateInput);

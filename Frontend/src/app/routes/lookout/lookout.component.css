@@ -1,6 +1,6 @@
 .lookout-container {
     height: calc(100vh - 72px);
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -30,7 +30,7 @@
     border: 1px solid black;
     width: auto;
     max-width: 20ch;
-    margin: 1rem auto 1rem auto;
+    margin: 1rem auto 0 auto;
     background-color: rgb(201, 230, 250);
     border-radius: 1em;
 }
