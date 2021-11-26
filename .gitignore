@@ -3,5 +3,6 @@ Backend/pyenv
 Backend/__pycache__
 Backend/website/__pycache__
 
+Heroku/frontend
 Heroku/backend
 Heroku/.env
