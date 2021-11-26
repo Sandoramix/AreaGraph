@@ -71,16 +71,23 @@
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-height: 10ch;
+    box-sizing: border-box;
+    max-width: 50ch;
+    min-width: 10rem;
+    max-height: 15ch;
+    overflow-y: auto;
+    /* min-height: 10ch;
     min-width: 25ch;
     max-height: 15ch;
-    max-width: 35ch;
+    max-width: 2rem;
     padding: 5px;
-    white-space: pre-line;
+    white-space: pre-line; */
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    border-radius: 1em;
+    /* border-radius: 1em;
     overflow-y: auto;
+    overflow-x: scroll;
+    left: 0; */
 }
 
 ::-webkit-scrollbar-thumb {

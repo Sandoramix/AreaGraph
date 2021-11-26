@@ -2,11 +2,7 @@
     <div class="chart-topline">
         <select id="select_type" class="select_custom chart-select-type" name="sensor_select" [(ngModel)]="selected_sensor_type" (ngModelChange)="updateHandler()">
 			<option value="" class="select-option">Seleziona Sensore</option>
-			<option
-				*ngFor="let i of sensor_values"
-				[value]="i"
-				class="select-option"
-			>
+			<option *ngFor="let i of sensor_values" [value]="i" class="select-option">
 				{{ i }}
 			</option>
 		</select>
@@ -32,7 +28,7 @@
             <div id="dropdown">
                 <div id="info-content-shape" class=""></div>
                 <div id="info-content-dropdown" class="info-content">
-                    <p [innerHTML]="sensor_info"></p>
+                    <p [innerHTML]="sensor_info" id="dropdown-text"></p>
                 </div>
             </div>
         </div>

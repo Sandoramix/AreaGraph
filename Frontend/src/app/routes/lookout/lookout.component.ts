@@ -66,7 +66,7 @@ export class LookoutComponent implements OnInit {
 		public title: TitleManagementService,
 		private cd: ChangeDetectorRef
 	) {
-		title.setSubTitle("Home");
+		title.setSubTitle("Mappa");
 		req.getWorkingStations().subscribe({
 			next: (res: any) => {
 				this.stations = res.stations;
@@ -82,7 +82,9 @@ export class LookoutComponent implements OnInit {
 		this.selected_station = ev ? ev : "";
 		this.sHourlyAvg = [];
 	}
-	ngOnInit() {}
+	ngOnInit() {
+		this.getStationAvg(34, "2021-10-01 00:00:00.00", "2021-10-20 00:00:00.00");
+	}
 
 	getStationHandler() {
 		let id = this.stations.filter((station) => {

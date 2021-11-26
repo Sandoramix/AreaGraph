@@ -36,11 +36,11 @@ export class Chart_custom {
 				showDelay: 0,
 				transitionDuration: 0.2,
 				position: function (pos, params, dom, rect, size) {
-					return [size.viewSize[0] / 2.25, "1%"];
+					return ["12%", "5%"];
 				},
 				formatter: function (params: any) {
 					let data = params[0];
-					return `<div style="text-align:center;width:15em">
+					return `<div style="text-align:center;width:fit-content;padding:5px">
 						<b>${data.name}</b>
 						<br>
 						${data.value} ${unit}
@@ -72,7 +72,7 @@ export class Chart_custom {
 		return {
 			xAxis: {
 				type: this.x_type,
-				boundaryGap: ["10%", "10%"],
+				boundaryGap: ["0%", "100%"],
 				data: x,
 				name: "Data",
 				axisLine: {
