@@ -82,9 +82,7 @@ export class LookoutComponent implements OnInit {
 		this.selected_station = ev ? ev : "";
 		this.sHourlyAvg = [];
 	}
-	ngOnInit() {
-		this.getStationAvg(34, "2021-10-01 00:00:00.00", "2021-10-20 00:00:00.00");
-	}
+	ngOnInit() {}
 
 	getStationHandler() {
 		let id = this.stations.filter((station) => {
