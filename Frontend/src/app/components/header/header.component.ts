@@ -9,7 +9,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class HeaderComponent implements OnInit {
 	@Input() center_div: string;
-
+	@Input() head_title: string = "";
 	referLinks: PageInformation[] = [
 		{ title: "Home", link: "/home", value: "Home" },
 		{ title: "Map", link: "/map", value: "Mappa" },
