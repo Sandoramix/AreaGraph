@@ -1,4 +1,4 @@
-import { StationHourlyAvg } from "src/utils/StationHourlyAvg";
+import { StationHourlyAvg } from "src/utils/Station";
 import { Component, Input, OnInit, Renderer2 } from "@angular/core";
 import { EChartsOption } from "echarts";
 import { Chart_custom } from "src/utils/Chart-class";
@@ -49,11 +49,7 @@ export class LinechartComponent implements OnInit {
 
 			let _class: string = info.classList[0];
 
-			if (
-				_class !== "info-content" &&
-				_class !== "info-icon" &&
-				_id !== "info-content-shape"
-			) {
+			if (_class !== "info-content" && _class !== "info-icon" && _id !== "info-content-shape") {
 				this.infoDropdownRemove();
 			}
 		});
@@ -109,11 +105,7 @@ export class LinechartComponent implements OnInit {
 
 					return avg;
 				}
-				return avg >= 0 && avg <= 100
-					? avg
-					: avg <= 1000
-					? avg / 10
-					: avg / 100;
+				return avg >= 0 && avg <= 100 ? avg : avg <= 1000 ? avg / 10 : avg / 100;
 			});
 		}
 
@@ -137,12 +129,7 @@ export class LinechartComponent implements OnInit {
 			}
 		}
 		if (!this.chart_options) {
-			this.chart_options = this.chart_class.newLineChart(
-				x,
-				y,
-				sensor_unit,
-				limit
-			);
+			this.chart_options = this.chart_class.newLineChart(x, y, sensor_unit, limit);
 			return;
 		}
 		if (this.main_chart) {
@@ -158,29 +145,21 @@ export class LinechartComponent implements OnInit {
 	}
 
 	infoDropdownToggle() {
-		let info_dropdown = document
-			? document.getElementById("info-content-dropdown")
-			: null;
+		let info_dropdown = document ? document.getElementById("info-content-dropdown") : null;
 		if (!info_dropdown) return;
 		info_dropdown.classList.toggle("show");
 
-		let info_dropdown_shape = document
-			? document.getElementById("info-content-shape")
-			: null;
+		let info_dropdown_shape = document ? document.getElementById("info-content-shape") : null;
 		if (!info_dropdown_shape) return;
 		info_dropdown_shape.classList.toggle("visible");
 	}
 
 	private infoDropdownRemove() {
-		let info_dropdown = document
-			? document.getElementById("info-content-dropdown")
-			: null;
+		let info_dropdown = document ? document.getElementById("info-content-dropdown") : null;
 		if (!info_dropdown) return;
 		info_dropdown.classList.remove("show");
 
-		let info_dropdown_shape = document
-			? document.getElementById("info-content-shape")
-			: null;
+		let info_dropdown_shape = document ? document.getElementById("info-content-shape") : null;
 		if (!info_dropdown_shape) return;
 		info_dropdown_shape.classList.remove("visible");
 	}
