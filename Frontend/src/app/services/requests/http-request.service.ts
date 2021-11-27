@@ -1,9 +1,9 @@
-import { environment } from 'src/environments/environment.dev';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
-import { StationAvg } from 'src/utils/StationAvg';
-import { Observable } from 'rxjs';
+import { environment } from "src/environments/environment.dev";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { switchMap } from "rxjs/operators";
+import { StationAvg, Station } from "src/utils/Station";
+import { Observable } from "rxjs";
 
 interface Auth {
 	token: string;
@@ -25,8 +25,8 @@ export class HttpRequestService {
 				switchMap((tk) =>
 					this.http.get(`${environment.apiUrl}all_stations`, {
 						headers: this.Headers(this.getToken()),
-					}),
-				),
+					})
+				)
 			);
 		}
 		return st_request;
@@ -43,8 +43,8 @@ export class HttpRequestService {
 				switchMap((tk) =>
 					this.http.get(`${environment.apiUrl}working_stations`, {
 						headers: this.Headers(this.getToken()),
-					}),
-				),
+					})
+				)
 			);
 		}
 		return st_request;
@@ -52,9 +52,9 @@ export class HttpRequestService {
 
 	getStationAvg(st_id: number, dt_from: string, dt_to: string): Observable<StationAvg> {
 		let body = new FormData();
-		body.set('station_id', st_id.toString());
-		body.set('date_from', dt_from);
-		body.set('date_to', dt_to);
+		body.set("station_id", st_id.toString());
+		body.set("date_from", dt_from);
+		body.set("date_to", dt_to);
 
 		let st_avg_request;
 
@@ -67,11 +67,29 @@ export class HttpRequestService {
 				switchMap((auth) =>
 					this.http.post<StationAvg>(`${environment.apiUrl}station_avg`, body, {
 						headers: this.Headers(auth.token),
-					}),
-				),
+					})
+				)
 			);
 		}
 		return st_avg_request;
+	}
+
+	getStation(id: number): Observable<Station> {
+		let request;
+		if (this.checkCookie()) {
+			request = this.http.get<Station>(`${environment.apiUrl}station/${id}`, {
+				headers: this.Headers(this.getToken()),
+			});
+		} else {
+			request = this.getAuth().pipe(
+				switchMap((auth) =>
+					this.http.get<Station>(`${environment.apiUrl}station/${id}`, {
+						headers: this.Headers(auth.token),
+					})
+				)
+			);
+		}
+		return request;
 	}
 
 	private Headers(tk: string, obj: object = {}) {
@@ -95,13 +113,13 @@ export class HttpRequestService {
 						obs.next(tk);
 						obs.complete;
 					});
-				}),
+				})
 			);
 	}
 
 	private getToken() {
-		let token = localStorage.getItem('auth_key');
-		return token != null ? token : '';
+		let token = localStorage.getItem("auth_key");
+		return token != null ? token : "";
 	}
 
 	private checkCookie() {
@@ -109,7 +127,7 @@ export class HttpRequestService {
 
 		let auth_k = cookie.auth;
 		let auth_exp = cookie.exp;
-		let parsed_exp: number | null = typeof auth_exp === 'string' ? +auth_exp : null;
+		let parsed_exp: number | null = typeof auth_exp === "string" ? +auth_exp : null;
 
 		if (!auth_k || (parsed_exp != null && parsed_exp <= Date.now())) {
 			return false;
@@ -119,13 +137,13 @@ export class HttpRequestService {
 
 	private getCookie() {
 		return {
-			auth: localStorage.getItem('auth_key'),
-			exp: localStorage.getItem('expires_at'),
+			auth: localStorage.getItem("auth_key"),
+			exp: localStorage.getItem("expires_at"),
 		};
 	}
 
 	private setCookie(tk: string, expiration: number) {
-		localStorage.setItem('auth_key', tk);
-		localStorage.setItem('expires_at', expiration.toString());
+		localStorage.setItem("auth_key", tk);
+		localStorage.setItem("expires_at", expiration.toString());
 	}
 }
