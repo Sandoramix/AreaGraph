@@ -1,11 +1,11 @@
-import { Station } from './../../../utils/Station';
+import { Station } from "./../../../utils/Station";
 import {
 	AfterViewInit,
 	Component,
 	Input,
 	Output,
 	EventEmitter,
-} from '@angular/core';
+} from "@angular/core";
 import {
 	Map,
 	Marker,
@@ -15,12 +15,12 @@ import {
 	LayerGroup,
 	featureGroup,
 	Point,
-} from 'leaflet';
+} from "leaflet";
 
 @Component({
-	selector: 'app-map',
-	templateUrl: './map.component.html',
-	styleUrls: ['./map.component.css'],
+	selector: "app-map",
+	templateUrl: "./map.component.html",
+	styleUrls: ["./map.component.css"],
 })
 export class MapComponent implements AfterViewInit {
 	@Input() stations: Station[];
@@ -32,23 +32,23 @@ export class MapComponent implements AfterViewInit {
 	private map: Map;
 	private layerGroup: LayerGroup;
 
-	private red = '../../../assets/map-icon-red.png';
-	private blue = '../../../assets/map-icon-blue.png';
+	private red = "../../../assets/map-icon-red.png";
+	private blue = "../../../assets/map-icon-blue.png";
 
 	private red_icon: Icon = new Icon({
 		iconUrl: this.red,
-		className: 'active',
+		className: "active",
 	});
 	private blue_icon: Icon = new Icon({
 		iconUrl: this.blue,
-		className: 'inactive',
+		className: "inactive",
 	});
 
 	ngAfterViewInit(): void {
-		this.map = new Map('map').setView([41.940685, 12.485678], 7);
+		this.map = new Map("map").setView([41.940685, 12.485678], 7);
 		this.layerGroup = new LayerGroup().addTo(this.map);
 
-		tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			maxZoom: 18,
 			attribution:
 				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -57,11 +57,14 @@ export class MapComponent implements AfterViewInit {
 	}
 
 	addMarkers(st: Station[]) {
-		if (st.length > 0) {
-			this.map.setView([st[0].latitude, st[0].longitude], 12, {
-				animate: true,
-			});
-		}
+		// if (st.length > 0) {
+		// 	this.map.setView([st[0].latitude, st[0].longitude], 12, {
+		// 		animate: true,
+		// 	});
+		// }
+		this.all_markers = [];
+		this.layerGroup.clearLayers();
+
 		st.forEach((station: Station) => {
 			this.setMarker(
 				station.latitude,
@@ -83,14 +86,12 @@ export class MapComponent implements AfterViewInit {
 			title: title,
 		})
 			.addTo(this.layerGroup)
-			.on('click', (st) => {
+			.on("click", (st) => {
 				let is_active;
 				let title = st.target.options.title;
 				this.all_markers.forEach((x) => {
 					let x_active =
-						x.getIcon().options.className == 'active'
-							? true
-							: false;
+						x.getIcon().options.className == "active" ? true : false;
 					if (x.options.title === title) {
 						is_active = x_active;
 						x.setIcon(is_active ? this.blue_icon : this.red_icon);

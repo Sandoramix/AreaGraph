@@ -1,51 +1,57 @@
+<app-header>
+	<div
+		style="width: 15rem; left: 0; right: 0"
+		class="h-75 position-absolute ml-auto mr-auto d-inline-flex"
+	>
+		<select
+			name="st_type"
+			id="select_st_type"
+			class="
+				custom-select
+				select-custom
+				bg-dark
+				text-warning
+				border-info
+				outline-info
+				text-center
+				h-100
+				selectpicker
+			"
+			[(ngModel)]="selected_station_type"
+			(ngModelChange)="getStations()"
+		>
+			<option value="working_stations" selected class="st_option">
+				Stazioni più attive
+			</option>
+			<option value="all_stations" class="st_option">Tutte le stazioni</option>
+		</select>
+	</div>
+</app-header>
 <div class="lookout-container">
 	<div class="top-container">
 		<app-map (onStationSelect)="stationSelectHandler($event)"></app-map>
+
 		<div *ngIf="selected_station !== ''">
 			<h1 class="text-success text-center selected-station">
 				Stazione {{ selected_station }}
 			</h1>
 			<div class="bottom">
-				<p class="text-yellow text-center choice">
-					<b *ngIf="!validDates()">Scegli un intervallo</b>
+				<p class="text-yellow text-center choice" style="height: 2em">
+					<b [ngStyle]="{ display: !validDates() ? 'block' : 'none' }"
+						>Scegli un intervallo</b
+					>
 				</p>
 				<div class="datepicker-container">
-					<mat-form-field appearance="fill" class="mr-3 datepicker-item">
-						<mat-label class="text-primary">Data inizio</mat-label>
-						<input
-							readonly
-							matInput
-							[matDatepicker]="startpicker"
-							[value]="date_from.value"
-							[max]="max_date"
-							(dateInput)="date_fromInputHandler($event)"
-							(dateChange)="date_fromInputHandler($event)"
-						/>
-						<mat-datepicker-toggle
-							matSuffix
-							[for]="startpicker"
-						></mat-datepicker-toggle>
-						<mat-datepicker #startpicker></mat-datepicker>
-					</mat-form-field>
-
-					<mat-form-field appearance="fill" class="datepicker-item">
-						<mat-label class="text-primary">Data fine</mat-label>
-						<input
-							readonly
-							matInput
-							[matDatepicker]="endpicker"
-							[value]="date_to.value"
-							[min]="date_from.value"
-							[max]="max_date"
-							(dateInput)="date_toInputHandler($event)"
-							(dateChange)="date_toInputHandler($event)"
-						/>
-						<mat-datepicker-toggle
-							matSuffix
-							[for]="endpicker"
-						></mat-datepicker-toggle>
-						<mat-datepicker #endpicker></mat-datepicker>
-					</mat-form-field>
+					<app-daterangepicker
+						title="Data inizio"
+						(datechange)="date_fromInputHandler($event)"
+					></app-daterangepicker>
+					<app-daterangepicker
+						class="ml-3"
+						title="Data fine"
+						(datechange)="date_toInputHandler($event)"
+					>
+					</app-daterangepicker>
 				</div>
 				<div class="btn_custom">
 					<button

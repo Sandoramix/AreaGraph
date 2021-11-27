@@ -11,6 +11,13 @@
     width: 15em;
     border-radius: 5px;
 }
+.select-custom:hover{
+    cursor: pointer;
+}
+.select-custom > option{
+    color:var(--info);
+    font-size: medium;
+}
 
 .btn_custom {
     display: flex;

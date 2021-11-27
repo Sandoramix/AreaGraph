@@ -1,25 +1,56 @@
 <nav class="w-100 p-0 nav-custom navbar navbar-dark bg-dark align-middle">
-    <div>
-        <a [routerLink]="['/home']" (click)="titleService.setSubTitle('Home')" class="d-inline-flex nav navbar-brand nav-link text-white">
-            <img src="../../../assets/areagraph-logo.png" alt="AreaGraph" class="logo" title="AreaGraph" />
-            <h3 id="areagraph">AreaGraph</h3>
-        </a>
-    </div>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle
-        navigation" id="collapse-btn">
+	<div>
+		<a
+			[routerLink]="['/home']"
+			(click)="titleService.setSubTitle('Home')"
+			class="d-inline-flex nav navbar-brand nav-link text-white"
+		>
+			<img
+				src="../../../assets/areagraph-logo.png"
+				alt="AreaGraph"
+				class="logo"
+				title="AreaGraph"
+			/>
+			<h3 id="areagraph">AreaGraph</h3>
+		</a>
+	</div>
+	<ng-content style="position: relative"></ng-content>
+	<button
+		class="navbar-toggler"
+		type="button"
+		data-toggle="collapse"
+		data-target="#navbarNav"
+		aria-controls="navbarNav"
+		aria-expanded="false"
+		aria-label="Toggle
+        navigation"
+		id="collapse-btn"
+	>
 		<span class="navbar-toggler-icon"></span>
 	</button>
 
-    <div class="collapse navbar-collapse bg-dark" id="navbarNav" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle
-        navigation">
-        <hr class="hr-custom" />
-        <ul class="navbar-nav">
-            <li *ngFor="let tmp of getReferLinks()">
-                <a class="nav-link" [routerLink]="tmp.link" routerLinkActive="active-dir" (click)="titleService.setSubTitle(tmp.title)">
+	<div
+		class="collapse navbar-collapse bg-dark"
+		id="navbarNav"
+		data-toggle="collapse"
+		data-target="#navbarNav"
+		aria-controls="navbarNav"
+		aria-expanded="true"
+		aria-label="Toggle
+        navigation"
+	>
+		<hr class="hr-custom" />
+		<ul class="navbar-nav">
+			<li *ngFor="let tmp of getReferLinks()">
+				<a
+					class="nav-link"
+					[routerLink]="tmp.link"
+					routerLinkActive="active-dir"
+					(click)="titleService.setSubTitle(tmp.title)"
+				>
 					{{ tmp.value }}
 				</a>
-            </li>
-        </ul>
-    </div>
+			</li>
+		</ul>
+	</div>
 </nav>
