@@ -16,11 +16,11 @@ def workingStationIdsQuery() -> str:
 
 
 def getMinDate(st_id: int) -> str:
-    return f"select min(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id}"
+    return f"select min(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id} and s.bucket > '2001-01-01 00:00:00.000'"
 
 
 def getMaxDate(st_id: int) -> str:
-    return f"select max(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id}"
+    return f"select max(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id} and s.bucket > '2001-01-01 00:00:00.000'"
 
 
 def workingStationIds() -> list[int]:
@@ -84,7 +84,7 @@ def fetch_betweenDates(st_id: int, dt_from: str, dt_to: str,onlyWorking:bool=Fal
                         st.longitude as station_longitude from station_data_hourly_avg as sdha 
                         inner join sensor as ss on sdha.sensor_id = ss.id 
                         inner join station as st on sdha.station_id =st.id 
-                        where sdha.station_id ={st_id} and sdha.bucket between '{dt_from}' and '{dt_to}'
-                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10') {f"and st.id in ({workingStationIds()})" if onlyWorking else ""}
+                        where sdha.station_id ={st_id} and sdha.bucket between '{dt_from}' and '{dt_to}'  
+                        and ss.sensor_type in ('T','RH','CO2','PM2.5','PM10') 
                         order by sdha.bucket, ss.name
     """
