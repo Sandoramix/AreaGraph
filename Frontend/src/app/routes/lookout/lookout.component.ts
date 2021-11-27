@@ -34,8 +34,6 @@ export class LookoutComponent implements OnInit {
 	date_from: string = "";
 	date_to: string = "";
 
-	@ViewChild("datepicker_from") datepicker_from: ElementRef;
-
 	station_min_date: moment.Moment;
 	station_max_date: moment.Moment = moment(new Date());
 
