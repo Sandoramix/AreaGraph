@@ -13,6 +13,16 @@ def workingStationIdsQuery() -> str:
 """
 
 
+
+
+def getMinDate(st_id: int) -> str:
+    return f"select min(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id}"
+
+
+def getMaxDate(st_id: int) -> str:
+    return f"select max(s.bucket) from station_data_hourly_avg as s where s.station_id ={st_id}"
+
+
 def workingStationIds() -> list[int]:
     return ','.join([str(i) for i in [
         34,

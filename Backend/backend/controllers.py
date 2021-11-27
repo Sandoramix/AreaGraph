@@ -1,5 +1,5 @@
 # modules
-from backend.queries import allStations, fetch_betweenDates, stationById, stationInfoById, workingStationIds, workingStations
+from backend.queries import allStations, fetch_betweenDates, stationById, stationInfoById, workingStationIds, workingStations,getMaxDate,getMinDate
 from functools import wraps
 import datetime
 from os import environ
@@ -96,14 +96,22 @@ def station_id_check(id: int) -> bool:
         return False
     return True
 
+def datetime_to_str(date):
+    return datetime.datetime.strftime(date,"%Y-%m-%d %H:%M:%S")
 
 def getStationByID(id: int):
-    station = execute_query(stationById(id), fetch_n=1)
+    station = execute_query(stationInfoById(id),1)
 
     if not station:
         return {}
     return station_tuple_to_json(station)
 
+def getStationDateRange(id: int)-> tuple:
+    if not station_id_check(id):
+        return ()
+    minDate:datetime.datetime=execute_query(getMinDate(id),1)[0]
+    maxDate:datetime.datetime=execute_query(getMaxDate(id),1)[0]
+    return (datetime_to_str(minDate),datetime_to_str(maxDate))
 
 def station_tuple_to_json(info: tuple, i: int = 0):
     """Transform the station fetched information into an object
@@ -115,12 +123,14 @@ def station_tuple_to_json(info: tuple, i: int = 0):
     Returns:
         json serializable objects
     """
+    print(info)
     return {
         "id": info[i],
         "name": info[i+1],
         "latitude": info[i+2],
         "longitude": info[i+3]
     }
+
 
 
 class StationDataAvgController(Resource):
@@ -172,10 +182,9 @@ class StationDataAvgController(Resource):
             date_from_splitted: str = date_from.split('.')[0]
             date_to_splitted: str = date_to.split('.')[0]
 
-            date_from_parsed: str = str(datetime.datetime.strptime(
-                date_from_splitted, "%Y-%m-%d %H:%M:%S"))
-            date_to_parsed: str = str(datetime.datetime.strptime(
-                date_to_splitted, "%Y-%m-%d %H:%M:%S"))
+            date_from_parsed: str = datetime_to_str(date_from_splitted)
+
+            date_to_parsed: str = datetime_to_str(date_to_splitted)
 
             if date_from_splitted != date_from_parsed or date_to_splitted != date_to_parsed:
                 valid_date: bool = False
@@ -258,6 +267,28 @@ class WorkingStations(Resource):
             ]
         }, 200
 # ----------------------------------------------------------------------------------------------
+
+class StationInfo(Resource):
+    @token_required
+    def get(self,id):
+        _id:int
+        try:
+            _id=int(id)
+        except ValueError:
+            return {"message":"Station id must be an integer"}
+        
+
+        if not station_id_check(_id):
+            return {"message":"No station found!"},404
+
+        dates=getStationDateRange(_id)
+        station=getStationByID(_id)
+        station["min_date"]=dates[0]
+        station["max_date"]=dates[1]
+        
+        return station,200
+        
+
 
 
 class HomePage(Resource):
