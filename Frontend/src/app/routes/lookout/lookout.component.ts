@@ -121,6 +121,7 @@ export class LookoutComponent implements OnInit {
 			next: (stAvg) => {
 				this.stationAvg = stAvg;
 				let tmpAvg = stAvg.data_hourly_avg;
+
 				if (tmpAvg == null || tmpAvg.length == 0) {
 					alert(`La stazione "${this.selected_station}" non ha nessun valore nel periodo selezionato`);
 					return;
@@ -132,7 +133,7 @@ export class LookoutComponent implements OnInit {
 				setTimeout(() => {
 					let chart = document.getElementById("chart");
 					if (chart) chart.scrollIntoView();
-				}, 2000);
+				}, 1000);
 			},
 			error: (err) => {
 				alert("Internal server error. Try again later");
