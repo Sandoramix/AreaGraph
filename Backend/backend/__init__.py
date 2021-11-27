@@ -5,7 +5,7 @@ from flask import Flask, make_response
 from flask_restful import Api
 from flask_cors import CORS
 
-from .controllers import StationDataAvgController, AllStations, WorkingStations, HomePage, request, environ, jwt, jsonify
+from .controllers import StationDataAvgController, AllStations, WorkingStations, StationInfo, request, environ, jwt, jsonify
 
 # flask app
 app = Flask(__name__)
@@ -19,7 +19,7 @@ api = Api(app)
 api.add_resource(StationDataAvgController, "/api/station_avg")
 api.add_resource(AllStations, '/api/all_stations')
 api.add_resource(WorkingStations, '/api/working_stations')
-
+api.add_resource(StationInfo, "/api/station/<path:id>")
 
 # Auth route
 @app.route('/api/auth', methods=['GET'])
