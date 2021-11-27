@@ -4,8 +4,8 @@ export interface Station {
 	name: string;
 	latitude: number;
 	longitude: number;
-	date_from: string;
-	date_to: string;
+	min_date: string;
+	max_date: string;
 }
 
 export interface StationAvg {
