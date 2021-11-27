@@ -1,25 +1,17 @@
-import { DaterangepickerComponent } from "./daterangepicker/daterangepicker.component";
+import { FormControl } from "@angular/forms";
+import { MY_FORMATS } from "./daterangepicker/daterangepicker.component";
 import { MapComponent } from "../../components/map/map.component";
 import { LinechartComponent } from "../../components/linechart/linechart.component";
 
 import { HttpRequestService } from "src/app/services/requests/http-request.service";
 import { TitleManagementService } from "src/app/services/title/title-management.service";
 
-import {
-	ChangeDetectorRef,
-	Component,
-	OnChanges,
-	OnInit,
-	ViewChild,
-} from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, OnChanges, OnInit, ViewChild } from "@angular/core";
 
-import { FormControl } from "@angular/forms";
+import * as moment from "moment";
 
-import * as _moment from "moment";
-
-import { StationAvg } from "src/utils/StationAvg";
 import { Station } from "src/utils/Station";
-import { StationHourlyAvg } from "src/utils/StationHourlyAvg";
+import { StationHourlyAvg, StationAvg } from "src/utils/Station";
 
 @Component({
 	selector: "app-lookout",
@@ -31,32 +23,25 @@ export class LookoutComponent implements OnInit {
 
 	selected_station: string = "";
 
-	_date_from: string = "";
-	_date_to: string = "";
+	@ViewChild(LinechartComponent) linechart: LinechartComponent;
+	@ViewChild(MapComponent) map: MapComponent;
 
 	stations: Station[] = [];
-
-	headers: string[] = [
-		"Created on",
-		"Average",
-		"Unit",
-		"Sensor id",
-		"Sensor type",
-	];
-
+	currentStation: Station;
 	stationAvg: StationAvg;
 	sHourlyAvg: StationHourlyAvg[] | null = null;
 
-	@ViewChild(LinechartComponent) linechart: LinechartComponent;
-	@ViewChild(MapComponent) map: MapComponent;
-	@ViewChild(DaterangepickerComponent)
-	date_range_picker: DaterangepickerComponent;
+	date_from: string = "";
+	date_to: string = "";
 
-	constructor(
-		public httpRequest: HttpRequestService,
-		public title: TitleManagementService,
-		private cd: ChangeDetectorRef
-	) {
+	@ViewChild("datepicker_from") datepicker_from: ElementRef;
+
+	station_min_date: moment.Moment;
+	station_max_date: moment.Moment = moment(new Date());
+
+	date_from_maximum: moment.Moment;
+	date_to_minimum: moment.Moment;
+	constructor(public httpRequest: HttpRequestService, public title: TitleManagementService, private cd: ChangeDetectorRef) {
 		title.setSubTitle("Mappa");
 		this.getStations();
 	}
@@ -94,17 +79,39 @@ export class LookoutComponent implements OnInit {
 	}
 	//
 	stationSelectHandler(ev?: string) {
-		this.selected_station = ev ? ev : "";
+		this.date_from = "";
+		this.date_to = "";
+
 		this.sHourlyAvg = [];
+		this.station_max_date = moment("");
+		this.station_min_date = moment("");
+
+		this.selected_station = ev ? ev : "";
+
+		let st = this.stations.find((st) => {
+			return st.name == this.selected_station;
+		});
+
+		if (!st) return;
+		let id = st.id;
+		this.httpRequest.getStation(id).subscribe((st) => {
+			this.currentStation = st;
+			this.station_min_date = moment(st.min_date);
+			this.station_max_date = moment(st.max_date);
+
+			this.date_from_maximum = this.station_max_date;
+			this.date_to_minimum = this.station_min_date;
+		});
 	}
+
 	ngOnInit() {}
 
 	getStationHandler() {
 		let id = this.stations.filter((station) => {
 			return station.name === this.selected_station;
 		})[0].id;
-		let d_from = `${this._date_from} 00:00:00.00`;
-		let d_to = `${this._date_to} 23:00:00.00`;
+		let d_from = `${this.date_from} 00:00:00.00`;
+		let d_to = `${this.date_to} 23:00:00.00`;
 
 		this.getStationAvg(id, d_from, d_to);
 	}
@@ -115,9 +122,7 @@ export class LookoutComponent implements OnInit {
 				this.stationAvg = stAvg;
 				let tmpAvg = stAvg.data_hourly_avg;
 				if (tmpAvg == null || tmpAvg.length == 0) {
-					alert(
-						`La stazione "${this.selected_station}" non ha nessun valore nel periodo selezionato`
-					);
+					alert(`La stazione "${this.selected_station}" non ha nessun valore nel periodo selezionato`);
 					return;
 				}
 
@@ -137,21 +142,25 @@ export class LookoutComponent implements OnInit {
 	}
 
 	date_fromInputHandler(ev: any): void {
-		this._date_from = ev.format(
-			this.date_range_picker.formats.display.dateInput
-		);
+		this.date_from = this.formatMoment(ev);
+		this.date_to_minimum = moment(this.date_from);
 	}
 
 	date_toInputHandler(ev: any): void {
-		this._date_to = ev.format(this.date_range_picker.formats.display.dateInput);
+		this.date_to = this.formatMoment(ev);
+		this.date_from_maximum = moment(this.date_to);
 	}
 
 	validDates(): boolean {
-		if (this._date_from !== "" && this._date_to !== "") return true;
+		if (this.date_from !== "" && this.date_to !== "") return true;
 		return false;
 	}
 
 	selectHandler() {
 		this.sHourlyAvg = [];
+	}
+	formatMoment(m: moment.Moment): string {
+		let out = m.format(MY_FORMATS.display.dateInput);
+		return out === "Invalid date" ? "" : out;
 	}
 }

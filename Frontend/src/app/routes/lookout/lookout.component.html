@@ -1,28 +1,13 @@
 <app-header>
-	<div
-		style="width: 15rem; left: 0; right: 0"
-		class="h-75 position-absolute ml-auto mr-auto d-inline-flex"
-	>
+	<div style="width: 10em; left: 0; right: 0" class="h-75 position-absolute ml-auto mr-auto d-inline-flex">
 		<select
 			name="st_type"
 			id="select_st_type"
-			class="
-				custom-select
-				select-custom
-				bg-dark
-				text-warning
-				border-info
-				outline-info
-				text-center
-				h-100
-				selectpicker
-			"
+			class="custom-select select-custom bg-dark text-warning border-info outline-info text-center h-100 selectpicker"
 			[(ngModel)]="selected_station_type"
 			(ngModelChange)="getStations()"
 		>
-			<option value="working_stations" selected class="st_option">
-				Stazioni più attive
-			</option>
+			<option value="working_stations" selected class="st_option">Stazioni più attive</option>
 			<option value="all_stations" class="st_option">Tutte le stazioni</option>
 		</select>
 	</div>
@@ -32,35 +17,38 @@
 		<app-map (onStationSelect)="stationSelectHandler($event)"></app-map>
 
 		<div *ngIf="selected_station !== ''">
-			<h1 class="text-success text-center selected-station">
-				Stazione {{ selected_station }}
-			</h1>
-			<div class="bottom">
-				<p class="text-yellow text-center choice" style="height: 2em">
-					<b [ngStyle]="{ display: !validDates() ? 'block' : 'none' }"
-						>Scegli un intervallo</b
-					>
+			<h1 class="text-info text-center selected-station border border-info rounded p-2">Stazione {{ selected_station }} <br /></h1>
+			<div class="text-yellow text-center choice text-dark" style="height: 3em">
+				<p [ngClass]="!validDates() ? 'd-block' : 'd-none'" class="position-absolute" style="top: 0">
+					<b>Scegli l'intervallo </b>
 				</p>
-				<div class="datepicker-container">
+				<p [ngClass]="formatMoment(station_min_date) !== '' ? 'd-block' : 'd-none'" class="position-absolute" style="bottom: 0">
+					[ <span class="text-success">{{ formatMoment(station_min_date) }}</span> ─ <span class="text-success">{{ formatMoment(station_max_date) }}</span> ]
+				</p>
+			</div>
+			<div class="bottom">
+				<div id="datepicker-container">
 					<app-daterangepicker
 						title="Data inizio"
+						[value]="date_from"
+						[min_date]="station_min_date"
+						[max_date]="date_from_maximum"
 						(datechange)="date_fromInputHandler($event)"
+						style="min-width: 10ch !important"
 					></app-daterangepicker>
 					<app-daterangepicker
+						[value]="date_to"
+						[min_date]="date_to_minimum"
+						[max_date]="station_max_date"
 						class="ml-3"
 						title="Data fine"
 						(datechange)="date_toInputHandler($event)"
+						style="min-width: 10ch !important"
 					>
 					</app-daterangepicker>
 				</div>
 				<div class="btn_custom">
-					<button
-						[disabled]="!validDates()"
-						type="button"
-						class="btn btn-primary text-center bg-info"
-						style="width: 10em"
-						(click)="getStationHandler()"
-					>
+					<button [disabled]="!validDates()" type="button" class="btn btn-primary text-center bg-info p-auto" style="width: 13.5rem; height: 3.5rem; font-size: 1.5em" (click)="getStationHandler()">
 						Cerca
 					</button>
 				</div>
@@ -68,15 +56,7 @@
 		</div>
 	</div>
 
-	<div
-		id="chart"
-		ngClass="{{
-			sHourlyAvg != null && sHourlyAvg.length > 0 ? 'active' : 'inactive'
-		}}"
-	>
-		<app-linechart
-			[data]="sHourlyAvg"
-			[enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"
-		></app-linechart>
+	<div id="chart" ngClass="{{ sHourlyAvg != null && sHourlyAvg.length > 0 ? 'active' : 'inactive' }}">
+		<app-linechart [data]="sHourlyAvg" [enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"></app-linechart>
 	</div>
 </div>
