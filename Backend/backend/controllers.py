@@ -97,14 +97,18 @@ def station_id_check(id: int) -> bool:
     return True
 
 def datetime_to_str(date):
-    return datetime.datetime.strftime(date,"%Y-%m-%d %H:%M:%S")
+    return date.strftime("%Y-%m-%d %H:%M:%S")
 
 def getStationByID(id: int):
     station = execute_query(stationInfoById(id),1)
 
     if not station:
         return {}
-    return station_tuple_to_json(station)
+    station=station_tuple_to_json(station)
+    dates=getStationDateRange(id)
+    station["min_date"]=dates[0]
+    station["max_date"]=dates[1]
+    return station
 
 def getStationDateRange(id: int)-> tuple:
     if not station_id_check(id):
@@ -123,7 +127,6 @@ def station_tuple_to_json(info: tuple, i: int = 0):
     Returns:
         json serializable objects
     """
-    print(info)
     return {
         "id": info[i],
         "name": info[i+1],
@@ -179,18 +182,17 @@ class StationDataAvgController(Resource):
         # [DATES VALIDATION]
         valid_date: bool = True
         try:
-            date_from_splitted: str = date_from.split('.')[0]
-            date_to_splitted: str = date_to.split('.')[0]
+            _date_from_raw: str = date_from.split('.')[0]
+            _date_to_raw: str = date_to.split('.')[0]
+            
+            _date_from: str = _date_from_raw.format("%Y-%m-%d %H:%M:%S")
+            _date_to: str = _date_to_raw.format("%Y-%m-%d %H:%M:%S")
 
-            date_from_parsed: str = datetime_to_str(date_from_splitted)
-
-            date_to_parsed: str = datetime_to_str(date_to_splitted)
-
-            if date_from_splitted != date_from_parsed or date_to_splitted != date_to_parsed:
-                valid_date: bool = False
+            if _date_from_raw != _date_from or _date_to_raw != _date_to:
+                valid_date = False
         except Exception as e:
-            valid_date: bool = False
-
+            valid_date = False
+ 
         if not valid_date:
             abort(406, "DATE/S INVALID")
 
@@ -204,11 +206,10 @@ class StationDataAvgController(Resource):
             return{
                 'station': getStationByID(st_id),
                 'data_hourly_avg': []
-            }
-        # first row. Needed for station informations
-        info = records[0]
+            },200
+        
         return {
-            "station": station_tuple_to_json(info, 7),
+            "station": getStationByID(st_id),
             "data_hourly_avg": [
                 self.format_station_data_avg(i) for i in records
             ]
@@ -224,7 +225,7 @@ class StationDataAvgController(Resource):
             json serializable object
         """
         return{
-            "created_on": info[0].strftime("%Y-%m-%d %H:%M:%S"),
+            "created_on": datetime_to_str(info[0]),
             "avg_value": info[1],
             "sensor": {
                 "id": info[2],
@@ -269,24 +270,19 @@ class WorkingStations(Resource):
 # ----------------------------------------------------------------------------------------------
 
 class StationInfo(Resource):
+
     @token_required
     def get(self,id):
         _id:int
         try:
             _id=int(id)
         except ValueError:
-            return {"message":"Station id must be an integer"}
-        
-
+            abort(400,'Station id must be an integer')
+            
         if not station_id_check(_id):
-            return {"message":"No station found!"},404
-
-        dates=getStationDateRange(_id)
-        station=getStationByID(_id)
-        station["min_date"]=dates[0]
-        station["max_date"]=dates[1]
+            abort(404,'No station found!')    
         
-        return station,200
+        return getStationByID(_id),200
         
 
 
@@ -294,7 +290,6 @@ class StationInfo(Resource):
 class HomePage(Resource):
     """Homepage
     """
-
     def get(self):
         return {"message": "Homepage is unused"}, 306
 # ----------------------------------------------------------------------------------------------
