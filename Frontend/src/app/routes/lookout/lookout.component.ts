@@ -128,10 +128,6 @@ export class LookoutComponent implements OnInit {
 				this.sHourlyAvg = stAvg.data_hourly_avg;
 
 				this.linechart.updateHandler(this.sHourlyAvg);
-				setTimeout(() => {
-					let chart = document.getElementById("chart");
-					if (chart) chart.scrollIntoView();
-				}, 1000);
 			},
 			error: (err) => {
 				alert("Internal server error. Try again later");
@@ -151,7 +147,7 @@ export class LookoutComponent implements OnInit {
 	}
 
 	validDates(): boolean {
-		if (this.date_from !== "" && this.date_to !== "") return true;
+		if (this.date_from !== "" && this.date_to !== "" && this.date_from > this.formatMoment(this.station_min_date) && this.date_to < this.formatMoment(this.station_max_date)) return true;
 		return false;
 	}
 
@@ -161,5 +157,10 @@ export class LookoutComponent implements OnInit {
 	formatMoment(m: moment.Moment): string {
 		let out = m.format(MY_FORMATS.display.dateInput);
 		return out === "Invalid date" ? "" : out;
+	}
+
+	goToChart() {
+		let chart = document.getElementById("chart");
+		if (chart) chart.scrollIntoView();
 	}
 }

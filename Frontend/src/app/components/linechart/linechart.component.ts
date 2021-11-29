@@ -1,5 +1,5 @@
 import { StationHourlyAvg } from "src/utils/Station";
-import { Component, Input, OnInit, Renderer2 } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from "@angular/core";
 import { EChartsOption } from "echarts";
 import { Chart_custom } from "src/utils/Chart-class";
 
@@ -9,6 +9,8 @@ import { Chart_custom } from "src/utils/Chart-class";
 	styleUrls: ["./linechart.component.css"],
 })
 export class LinechartComponent implements OnInit {
+	@Output() afterLoading: EventEmitter<string> = new EventEmitter();
+
 	private chart_class: Chart_custom = new Chart_custom();
 
 	sensor_values: string[] = ["CO2", "T", "RH", "PM2.5", "PM10"];
@@ -67,6 +69,9 @@ export class LinechartComponent implements OnInit {
 		if (datas) {
 			this.data = datas;
 			this.selected_sensor_type = "CO2";
+			setTimeout(() => {
+				this.afterLoading.emit("");
+			}, 1000);
 		}
 
 		let index = this.sensor_values.indexOf(this.selected_sensor_type);
@@ -130,6 +135,7 @@ export class LinechartComponent implements OnInit {
 		}
 		if (!this.chart_options) {
 			this.chart_options = this.chart_class.newLineChart(x, y, sensor_unit, limit);
+
 			return;
 		}
 		if (this.main_chart) {

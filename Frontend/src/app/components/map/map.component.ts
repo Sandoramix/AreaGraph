@@ -1,21 +1,6 @@
 import { Station } from "./../../../utils/Station";
-import {
-	AfterViewInit,
-	Component,
-	Input,
-	Output,
-	EventEmitter,
-} from "@angular/core";
-import {
-	Map,
-	Marker,
-	marker,
-	tileLayer,
-	Icon,
-	LayerGroup,
-	featureGroup,
-	Point,
-} from "leaflet";
+import { AfterViewInit, Component, Input, Output, EventEmitter } from "@angular/core";
+import { Map, Marker, marker, tileLayer, Icon, LayerGroup, featureGroup, Point } from "leaflet";
 
 @Component({
 	selector: "app-map",
@@ -50,28 +35,17 @@ export class MapComponent implements AfterViewInit {
 
 		tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			maxZoom: 18,
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			minZoom: 3,
 		}).addTo(this.map);
 	}
 
 	addMarkers(st: Station[]) {
-		// if (st.length > 0) {
-		// 	this.map.setView([st[0].latitude, st[0].longitude], 12, {
-		// 		animate: true,
-		// 	});
-		// }
 		this.all_markers = [];
 		this.layerGroup.clearLayers();
 
 		st.forEach((station: Station) => {
-			this.setMarker(
-				station.latitude,
-				station.longitude,
-				station.name,
-				this.blue_icon
-			);
+			this.setMarker(station.latitude, station.longitude, station.name, this.blue_icon);
 		});
 
 		var group = featureGroup(this.all_markers).addTo(this.map);
@@ -90,8 +64,7 @@ export class MapComponent implements AfterViewInit {
 				let is_active;
 				let title = st.target.options.title;
 				this.all_markers.forEach((x) => {
-					let x_active =
-						x.getIcon().options.className == "active" ? true : false;
+					let x_active = x.getIcon().options.className == "active" ? true : false;
 					if (x.options.title === title) {
 						is_active = x_active;
 						x.setIcon(is_active ? this.blue_icon : this.red_icon);

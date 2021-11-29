@@ -56,7 +56,7 @@
 		</div>
 	</div>
 
-	<div id="chart" ngClass="{{ sHourlyAvg != null && sHourlyAvg.length > 0 ? 'active' : 'inactive' }}">
-		<app-linechart [data]="sHourlyAvg" [enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"></app-linechart>
+	<div id="chart">
+		<app-linechart (afterLoading)="goToChart()" [data]="sHourlyAvg" [enabled]="sHourlyAvg != null && sHourlyAvg.length > 0"></app-linechart>
 	</div>
 </div>

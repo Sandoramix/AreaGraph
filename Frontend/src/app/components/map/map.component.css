@@ -1,5 +1,8 @@
 #map {
-    height: 50vh;
-    min-height: 15rem;
+    height: 40vh;
+    /* min-height: 15rem; */
+    /* max-width: ; */
+    width: 95vw;
     z-index: 0;
+   
 }

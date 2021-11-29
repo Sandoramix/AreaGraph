@@ -1,24 +1,13 @@
-<div id="chart" class="chart-container" *ngIf="enabled">
+<div id="chart" class="chart-container" ngClass="{{ enabled ? 'd-block' : 'd-none' }}">
 	<div class="chart-topline">
-		<select
-			id="select_type"
-			class="select_custom chart-select-type"
-			name="sensor_select"
-			[(ngModel)]="selected_sensor_type"
-			(ngModelChange)="updateHandler()"
-		>
+		<select id="select_type" class="select_custom chart-select-type" name="sensor_select" [(ngModel)]="selected_sensor_type" (ngModelChange)="updateHandler()">
 			<option *ngFor="let i of sensor_values" [value]="i" class="select-option">
 				{{ i }}
 			</option>
 		</select>
 
 		<div id="info-dropdown">
-			<svg
-				(click)="infoDropdownToggle()"
-				fill="#221d53"
-				class="info-icon"
-				viewBox="0 0 16 16"
-			>
+			<svg (click)="infoDropdownToggle()" fill="#221d53" class="info-icon" viewBox="0 0 16 16">
 				<path
 					d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8
                     0a8
@@ -45,12 +34,6 @@
 	</div>
 
 	<div class="main-chart">
-		<div
-			echarts
-			class="chart"
-			[options]="chart_options"
-			(chartInit)="chartInit($event)"
-			theme="dark"
-		></div>
+		<div echarts class="chart" [options]="chart_options" (chartInit)="chartInit($event)" theme="dark"></div>
 	</div>
 </div>
