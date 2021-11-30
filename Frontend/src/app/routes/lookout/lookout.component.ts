@@ -147,7 +147,7 @@ export class LookoutComponent implements OnInit {
 	}
 
 	validDates(): boolean {
-		if (this.date_from !== "" && this.date_to !== "" && this.date_from > this.formatMoment(this.station_min_date) && this.date_to < this.formatMoment(this.station_max_date)) return true;
+		if (this.date_from !== "" && this.date_to !== "" && this.date_from >= this.formatMoment(this.station_min_date) && this.date_to <= this.formatMoment(this.station_max_date)) return true;
 		return false;
 	}
 
